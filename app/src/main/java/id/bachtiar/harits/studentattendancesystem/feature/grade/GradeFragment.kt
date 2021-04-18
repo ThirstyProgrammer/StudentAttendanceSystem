@@ -1,20 +1,16 @@
-package id.bachtiar.harits.studentattendancesystem.grade
+package id.bachtiar.harits.studentattendancesystem.feature.grade
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.material.appbar.AppBarLayout
 import id.bachtiar.harits.studentattendancesystem.databinding.FragmentGradeBinding
 import id.bachtiar.harits.studentattendancesystem.model.Grade
 import id.bachtiar.harits.studentattendancesystem.model.Student
-import id.bachtiar.harits.studentattendancesystem.report.ReportFragmentDirections
-import id.bachtiar.harits.studentattendancesystem.util.AppBarStateChangeListener
 
 class GradeFragment : Fragment(), StudentReportAdapter.OnItemStudentReportClickCallback {
 
@@ -36,9 +32,6 @@ class GradeFragment : Fragment(), StudentReportAdapter.OnItemStudentReportClickC
         val grade: Grade = GradeFragmentArgs.fromBundle(arguments as Bundle).grade
         studentReportAdapter = StudentReportAdapter()
         studentReportAdapter.setOnItemClickCallback(this)
-        val linearLayoutManager = LinearLayoutManager(requireContext())
-        val dividerItemDecoration =
-            DividerItemDecoration(viewBinding.rvGrade.context, linearLayoutManager.orientation)
         viewBinding.apply {
 //            appBar.addOnOffsetChangedListener(object : AppBarStateChangeListener() {
 //                override fun onStateChanged(appBarLayout: AppBarLayout?, state: State) {
@@ -54,6 +47,9 @@ class GradeFragment : Fragment(), StudentReportAdapter.OnItemStudentReportClickC
             tvHomeroomTeacher.text = grade.homeroomTeacher
             tvTotalStudent.text = "${grade.getTotalStudents()} Siswa"
 
+            val linearLayoutManager = LinearLayoutManager(requireContext())
+            val dividerItemDecoration =
+                DividerItemDecoration(rvGrade.context, linearLayoutManager.orientation)
             rvGrade.apply {
                 setHasFixedSize(true)
                 layoutManager = linearLayoutManager

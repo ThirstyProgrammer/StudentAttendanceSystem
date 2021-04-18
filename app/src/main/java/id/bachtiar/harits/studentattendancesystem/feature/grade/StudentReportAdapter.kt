@@ -1,4 +1,4 @@
-package id.bachtiar.harits.studentattendancesystem.grade
+package id.bachtiar.harits.studentattendancesystem.feature.grade
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

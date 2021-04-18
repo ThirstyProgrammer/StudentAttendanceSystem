@@ -1,10 +1,11 @@
 package id.bachtiar.harits.studentattendancesystem.model
 
-abstract class Attendance{
+abstract class Attendance {
     abstract var status: Status
     abstract val information: String
 
     enum class Status {
+        PRESENT,
         SICK,
         PERMIT,
         NEGLECT

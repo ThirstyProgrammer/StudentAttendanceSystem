@@ -1,7 +1,6 @@
 package id.bachtiar.harits.studentattendancesystem
 
-import id.bachtiar.harits.studentattendancesystem.model.Grade
-import id.bachtiar.harits.studentattendancesystem.model.Student
+import id.bachtiar.harits.studentattendancesystem.model.*
 
 object DummyReport {
 
@@ -31,7 +30,34 @@ object DummyReport {
 
     private val students = arrayOf<List<Student>>(
         arrayListOf(
-            Student("AALIYA NAYLA FADYA RIZQYA", "P", "Islam", arrayListOf()),
+            Student(
+                "AALIYA NAYLA FADYA RIZQYA", "P", "Islam", arrayListOf(
+                    StudentAttendance(
+                        Schedule(
+                            "Pendidikan Agama Islam",
+                            "X IPA 1",
+                            "08.00",
+                            "10.00",
+                            "Senin"
+                        ),
+                        "18 April 2021",
+                        Attendance.Status.SICK,
+                        ""
+                    ),
+                    StudentAttendance(
+                        Schedule(
+                            "Pendidikan Agama Islam",
+                            "X IPA 1",
+                            "08.00",
+                            "10.00",
+                            "Senin"
+                        ),
+                        "18 April 2021",
+                        Attendance.Status.PERMIT,
+                        ""
+                    )
+                )
+            ),
             Student("ADIBATUL HASANAH", "P", "Islam", arrayListOf()),
             Student("AGIL SUKMAWATI", "P", "Islam", arrayListOf())
         ),

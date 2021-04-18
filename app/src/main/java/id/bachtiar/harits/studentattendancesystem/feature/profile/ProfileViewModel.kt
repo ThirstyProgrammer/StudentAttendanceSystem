@@ -1,4 +1,4 @@
-package id.bachtiar.harits.studentattendancesystem.profile
+package id.bachtiar.harits.studentattendancesystem.feature.profile
 
 import androidx.lifecycle.ViewModel
 

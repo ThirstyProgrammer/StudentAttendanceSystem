@@ -7,17 +7,17 @@
 
     <fragment
         android:id="@+id/navigation_home"
-        android:name="id.bachtiar.harits.studentattendancesystem.home.HomeFragment"
+        android:name="id.bachtiar.harits.studentattendancesystem.feature.home.HomeFragment"
         android:label="Home"
         tools:layout="@layout/fragment_home" />
     <fragment
         android:id="@+id/navigation_profile"
-        android:name="id.bachtiar.harits.studentattendancesystem.profile.ProfileFragment"
+        android:name="id.bachtiar.harits.studentattendancesystem.feature.profile.ProfileFragment"
         android:label="Profile"
         tools:layout="@layout/fragment_report" />
     <fragment
         android:id="@+id/navigation_report"
-        android:name="id.bachtiar.harits.studentattendancesystem.report.ReportFragment"
+        android:name="id.bachtiar.harits.studentattendancesystem.feature.report.ReportFragment"
         android:label="Report"
         tools:layout="@layout/fragment_report">
         <action
@@ -26,7 +26,7 @@
     </fragment>
     <activity
         android:id="@+id/grade_activity"
-        android:name="id.bachtiar.harits.studentattendancesystem.grade.GradeActivity"
+        android:name="id.bachtiar.harits.studentattendancesystem.feature.grade.GradeActivity"
         android:label="GradeActivity"
         tools:layout="@layout/activity_grade" >
         <argument

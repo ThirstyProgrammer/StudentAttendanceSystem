@@ -1,4 +1,4 @@
-package id.bachtiar.harits.studentattendancesystem.grade
+package id.bachtiar.harits.studentattendancesystem.feature.grade
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity

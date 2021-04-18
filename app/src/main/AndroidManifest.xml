@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.StudentAttendanceSystem">
         <activity
-            android:name=".grade.GradeActivity"
+            android:name="id.bachtiar.harits.studentattendancesystem.feature.grade.GradeActivity"
             android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar" />
         <activity
             android:name=".MainActivity"

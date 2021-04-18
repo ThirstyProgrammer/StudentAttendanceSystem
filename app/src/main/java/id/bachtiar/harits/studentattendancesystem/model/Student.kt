@@ -26,6 +26,7 @@ data class Student(
                 Attendance.Status.SICK -> totalSick += 1
                 Attendance.Status.PERMIT -> totalPermit += 1
                 Attendance.Status.NEGLECT -> totalNeglect += 1
+                else -> {}
             }
         }
     }

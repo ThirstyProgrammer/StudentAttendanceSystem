@@ -70,7 +70,7 @@
                 android:visibility="invisible"
                 app:layout_collapseMode="pin"
                 app:layout_scrollFlags="scroll|enterAlways"
-                app:navigationIcon="@drawable/ic_arrow_back_white_24dp" />
+                app:navigationIcon="@drawable/ic_arrow_back_black_24dp" />
         </com.google.android.material.appbar.CollapsingToolbarLayout>
     </com.google.android.material.appbar.AppBarLayout>
 
