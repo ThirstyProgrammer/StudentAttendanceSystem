@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/grade_navigation"
+    app:startDestination="@id/grade_fragment">
+    <fragment
+        android:id="@+id/grade_fragment"
+        android:name="id.bachtiar.harits.studentattendancesystem.grade.GradeFragment"
+        android:label="GradeFragment"
+        tools:layout="@layout/fragment_grade">
+        <argument
+            android:name="grade"
+            app:argType="id.bachtiar.harits.studentattendancesystem.model.Grade" />
+        <action
+            android:id="@+id/action_grade_fragment_to_studentFragment"
+            app:destination="@id/studentFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/studentFragment"
+        android:name="id.bachtiar.harits.studentattendancesystem.student.StudentFragment"
+        android:label="StudentFragment"
+        tools:layout="@layout/fragment_student" >
+        <argument
+            android:name="attendance"
+            app:argType="id.bachtiar.harits.studentattendancesystem.model.Student" />
+    </fragment>
+</navigation>
