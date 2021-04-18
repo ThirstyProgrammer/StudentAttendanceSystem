@@ -43,6 +43,9 @@ class StudentFragment : Fragment() {
                 addItemDecoration(dividerItemDecoration)
             }
             studentAttendanceAdapter.setData(student.attendance)
+            btnBack.setOnClickListener {
+                requireActivity().onBackPressed()
+            }
         }
     }
 }

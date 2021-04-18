@@ -55,6 +55,9 @@ class GradeFragment : Fragment(), StudentReportAdapter.OnItemStudentReportClickC
                 adapter = studentReportAdapter
                 addItemDecoration(dividerItemDecoration)
             }
+            btnBack.setOnClickListener {
+                requireActivity().finish()
+            }
             studentReportAdapter.setData(grade.students)
         }
     }
