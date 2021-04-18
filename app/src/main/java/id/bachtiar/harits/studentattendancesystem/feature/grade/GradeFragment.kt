@@ -42,10 +42,9 @@ class GradeFragment : Fragment(), StudentReportAdapter.OnItemStudentReportClickC
 //                    }
 //                }
 //            })
-            toolbar.title = grade.name
             tvName.text = grade.name
             tvHomeroomTeacher.text = grade.homeroomTeacher
-            tvTotalStudent.text = "${grade.getTotalStudents()} Siswa"
+            tvTotalStudent.text = grade.getTotalStudents()
 
             val linearLayoutManager = LinearLayoutManager(requireContext())
             val dividerItemDecoration =

@@ -15,62 +15,76 @@
             android:id="@+id/toolbar_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed"
+            app:layout_scrollFlags="enterAlways"
             app:toolbarId="@+id/toolbar">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackground"
+                android:padding="@dimen/padding_16">
+
+                <androidx.appcompat.widget.AppCompatImageButton
+                    android:id="@+id/btn_back"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:padding="@dimen/padding_8"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/ic_arrow_back_white_24dp" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tv_name"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/padding_16"
-                    android:layout_marginTop="@dimen/padding_16"
                     android:layout_marginEnd="@dimen/padding_16"
-                    android:gravity="center"
+                    android:textColor="@color/white"
                     android:textSize="16sp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toTopOf="@id/gl_center_vertical"
+                    app:layout_constraintEnd_toStartOf="@+id/tv_total_student"
+                    app:layout_constraintStart_toEndOf="@+id/btn_back"
                     tools:text="X IPA 1" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tv_homeroom_teacher"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/padding_16"
-                    android:layout_marginTop="@dimen/padding_8"
                     android:layout_marginEnd="@dimen/padding_16"
-                    android:gravity="center"
+                    android:textColor="@color/white"
                     android:textSize="16sp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_name"
-                    tools:text="Eny Purwaningsih, S.Pd" />
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toStartOf="@+id/tv_total_student"
+                    app:layout_constraintStart_toEndOf="@+id/btn_back"
+                    app:layout_constraintTop_toBottomOf="@+id/gl_center_vertical"
+                    tools:text="Siti M.Pd" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tv_total_student"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/padding_16"
-                    android:layout_marginTop="@dimen/padding_8"
-                    android:layout_marginBottom="@dimen/padding_16"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:background="@drawable/bg_oval_white"
                     android:gravity="center"
+                    android:textColor="@color/white"
                     android:textSize="16sp"
+                    android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_homeroom_teacher"
-                    tools:text="38 Siswa" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="38" />
 
-            <androidx.appcompat.widget.Toolbar
-                android:id="@+id/toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                android:visibility="invisible"
-                app:layout_collapseMode="pin"
-                app:layout_scrollFlags="scroll|enterAlways"
-                app:navigationIcon="@drawable/ic_arrow_back_black_24dp" />
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/gl_center_vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    app:layout_constraintGuide_percent="0.5" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
         </com.google.android.material.appbar.CollapsingToolbarLayout>
     </com.google.android.material.appbar.AppBarLayout>
 

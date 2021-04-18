@@ -35,6 +35,7 @@ class StudentFragment : Fragment() {
             val linearLayoutManager = LinearLayoutManager(requireContext())
             val dividerItemDecoration =
                 DividerItemDecoration(rvAttendance.context, linearLayoutManager.orientation)
+            tvName.text = student.name
             rvAttendance.apply {
                 setHasFixedSize(true)
                 layoutManager = linearLayoutManager
