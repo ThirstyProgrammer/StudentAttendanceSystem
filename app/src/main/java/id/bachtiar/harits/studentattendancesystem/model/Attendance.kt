@@ -4,11 +4,22 @@ abstract class Attendance {
     abstract var status: Status
     abstract val information: String
 
-    enum class Status {
-        PRESENT,
-        SICK,
-        PERMIT,
-        NEGLECT
+    enum class Status(value: String) {
+        PRESENT("Hadir"),
+        SICK("Sakit"),
+        PERMIT("Izin"),
+        NEGLECT("Alpa");
+
+        companion object {
+            fun getValue(status: Status): String {
+                return when (status) {
+                    PRESENT -> "Hadir"
+                    SICK -> "Sakit"
+                    PERMIT -> "Izin"
+                    NEGLECT -> "Alpa"
+                }
+            }
+        }
     }
 }
 

@@ -20,14 +20,14 @@
         tools:text="Pendidikan Agama Islam" />
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/tv_status"
+        android:id="@+id/tv_grade"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="Sakit" />
+        tools:text="X IPA 1" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tv_interval_hour"

@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import id.bachtiar.harits.studentattendancesystem.databinding.ItemStudentAttendanceBinding
+import id.bachtiar.harits.studentattendancesystem.model.Attendance
 import id.bachtiar.harits.studentattendancesystem.model.StudentAttendance
 
 class StudentAttendanceAdapter :
@@ -37,7 +38,7 @@ class StudentAttendanceAdapter :
         fun bind(attendance: StudentAttendance) {
             viewBinding.apply {
                 tvName.text = attendance.schedule.subjects
-                tvStatus.text = attendance.status.name
+                tvStatus.text = Attendance.Status.getValue(attendance.status)
                 tvIntervalHour.text =
                     "${attendance.schedule.startTime} - ${attendance.schedule.endTime}"
                 tvDate.text = "${attendance.schedule.day}, ${attendance.date}"
