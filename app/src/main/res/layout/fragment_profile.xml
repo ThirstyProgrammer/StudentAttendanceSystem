@@ -7,41 +7,89 @@
     android:background="@color/gray_300"
     android:orientation="vertical">
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/tv_name"
+    <RelativeLayout
+        android:id="@+id/container_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
-        android:padding="@dimen/padding_16"
-        android:textSize="16sp"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="AALIYA NAYLA FADYA RIZQYA" />
+        android:paddingHorizontal="@dimen/padding_16"
+        app:layout_constraintTop_toTopOf="parent">
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/tv_grade"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/white"
-        android:padding="@dimen/padding_16"
-        android:textSize="16sp"
-        app:layout_constraintTop_toBottomOf="@id/tv_name"
-        tools:text="X IPA 1" />
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/iv_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            app:srcCompat="@drawable/ic_account_circle_24dp" />
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/tv_subjects"
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/iv_name"
+            android:padding="@dimen/padding_16"
+            android:textSize="16sp"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="AALIYA NAYLA FADYA RIZQYA" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/container_grade"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
-        android:padding="@dimen/padding_16"
-        android:textSize="16sp"
-        app:layout_constraintTop_toBottomOf="@+id/tv_grade"
-        tools:text="Matematika, Fisika, Kimia" />
+        android:paddingHorizontal="@dimen/padding_16"
+        app:layout_constraintTop_toBottomOf="@id/container_name">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/iv_grade"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            app:srcCompat="@drawable/ic_class_24dp" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_grade"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/iv_grade"
+            android:background="@color/white"
+            android:padding="@dimen/padding_16"
+            android:textSize="16sp"
+            tools:text="X IPA 1" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/container_subjects"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:paddingHorizontal="@dimen/padding_16"
+        app:layout_constraintTop_toBottomOf="@+id/container_grade">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/iv_subjects"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            app:srcCompat="@drawable/ic_school_24dp" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_subjects"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/iv_subjects"
+            android:background="@color/white"
+            android:padding="@dimen/padding_16"
+            android:textSize="16sp"
+            tools:text="Matematika, Fisika, Kimia" />
+    </RelativeLayout>
 
     <androidx.appcompat.widget.AppCompatImageView
         android:layout_width="match_parent"
         android:layout_height="@dimen/stroke_size"
         android:background="@android:color/darker_gray"
-        app:layout_constraintTop_toBottomOf="@id/tv_subjects" />
+        app:layout_constraintTop_toBottomOf="@id/container_subjects" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/appCompatTextView5"
@@ -53,7 +101,7 @@
         android:padding="@dimen/padding_16"
         android:text="@string/sign_out"
         android:textSize="16sp"
-        app:layout_constraintTop_toBottomOf="@+id/tv_subjects" />
+        app:layout_constraintTop_toBottomOf="@+id/container_subjects" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tv_version"

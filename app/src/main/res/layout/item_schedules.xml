@@ -14,8 +14,8 @@
         android:layout_marginEnd="@dimen/padding_8"
         android:textSize="16sp"
         android:textStyle="bold"
-        app:layout_constraintBaseline_toBaselineOf="@+id/tv_status"
-        app:layout_constraintEnd_toStartOf="@+id/tv_status"
+        app:layout_constraintBaseline_toBaselineOf="@+id/tv_grade"
+        app:layout_constraintEnd_toStartOf="@+id/tv_grade"
         app:layout_constraintStart_toStartOf="parent"
         tools:text="Pendidikan Agama Islam" />
 

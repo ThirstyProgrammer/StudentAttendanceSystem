@@ -13,6 +13,9 @@
             android:name="id.bachtiar.harits.studentattendancesystem.feature.grade.GradeActivity"
             android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar" />
         <activity
+            android:name="id.bachtiar.harits.studentattendancesystem.feature.form.FormActivity"
+            android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar" />
+        <activity
             android:name=".MainActivity"
             android:label="@string/app_name">
             <intent-filter>

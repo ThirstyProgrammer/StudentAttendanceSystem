@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import id.bachtiar.harits.studentattendancesystem.DummyHome
@@ -42,6 +43,7 @@ class HomeFragment : Fragment(), ScheduleAdapter.OnItemScheduleClickCallback {
     }
 
     override fun onItemClicked(data: Schedule) {
-        TODO("Not yet implemented")
+        val toFormActivity = HomeFragmentDirections.actionNavigationHomeToFormActivity(data)
+        findNavController().navigate(toFormActivity)
     }
 }

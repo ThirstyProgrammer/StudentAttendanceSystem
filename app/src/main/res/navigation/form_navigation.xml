@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/form_navigation"
+    app:startDestination="@id/form_fragment">
+
+    <fragment
+        android:id="@+id/form_fragment"
+        android:name="id.bachtiar.harits.studentattendancesystem.feature.form.FormFragment"
+        android:label="FormFragment">
+        <argument
+            android:name="schedule"
+            app:argType="id.bachtiar.harits.studentattendancesystem.model.Schedule" />
+    </fragment>
+</navigation>
