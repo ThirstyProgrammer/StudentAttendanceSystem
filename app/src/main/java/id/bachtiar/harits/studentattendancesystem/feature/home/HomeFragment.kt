@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -23,6 +24,10 @@ class HomeFragment : Fragment(), ScheduleAdapter.OnItemScheduleClickCallback {
         savedInstanceState: Bundle?
     ): View? {
         viewBinding = FragmentHomeBinding.inflate(inflater, container, false)
+        viewModel = ViewModelProvider(
+            this,
+            ViewModelProvider.NewInstanceFactory()
+        ).get(HomeViewModel::class.java)
         return viewBinding.root
     }
 
@@ -40,6 +45,7 @@ class HomeFragment : Fragment(), ScheduleAdapter.OnItemScheduleClickCallback {
             addItemDecoration(dividerItemDecoration)
         }
         scheduleAdapter.setData(DummyHome.data)
+        viewModel.getData()
     }
 
     override fun onItemClicked(data: Schedule) {
