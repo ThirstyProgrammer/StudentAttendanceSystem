@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/user_navigation"
+    app:startDestination="@id/splash_fragment">
+
+    <fragment
+        android:id="@+id/splash_fragment"
+        android:name="id.bachtiar.harits.studentattendancesystem.feature.splash.SplashFragment"
+        android:label="SplashFragment"
+        tools:layout="@layout/fragment_splash">
+        <action
+            android:id="@+id/action_splash_fragment_to_signinFragment"
+            app:destination="@id/signin_fragment" />
+        <action
+            android:id="@+id/action_splash_fragment_to_mainActivity"
+            app:destination="@id/main_activity" />
+    </fragment>
+
+
+
+    <fragment
+        android:id="@+id/signin_fragment"
+        android:name="id.bachtiar.harits.studentattendancesystem.feature.login.SignInFragment"
+        android:label="LoginFragment"
+        tools:layout="@layout/fragment_signin" >
+        <action
+            android:id="@+id/action_loginFragment_to_mainActivity"
+            app:destination="@id/main_activity" />
+    </fragment>
+
+    <activity
+        android:id="@+id/main_activity"
+        android:name="id.bachtiar.harits.studentattendancesystem.MainActivity"
+        android:label="MainActivity"
+        tools:layout="@layout/activity_main" />
+
+</navigation>

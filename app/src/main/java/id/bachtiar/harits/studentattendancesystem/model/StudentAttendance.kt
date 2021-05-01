@@ -9,7 +9,7 @@ data class StudentAttendance(
     val schedule: Schedule,
     val date: String,
     override var status: Status,
-    override val information: String,
+    override var information: String,
 ) : Parcelable, Attendance() {
 
     fun getContainerColor(): Int {

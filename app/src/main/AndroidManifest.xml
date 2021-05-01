@@ -10,20 +10,24 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.StudentAttendanceSystem">
         <activity
-            android:name="id.bachtiar.harits.studentattendancesystem.feature.grade.GradeActivity"
-            android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar" />
-        <activity
-            android:name="id.bachtiar.harits.studentattendancesystem.feature.form.FormActivity"
-            android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar" />
-        <activity
-            android:name=".MainActivity"
-            android:label="@string/app_name">
+            android:name=".feature.splash.SplashActivity"
+            android:label="@string/app_name"
+            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/app_name" />
+        <activity
+            android:name="id.bachtiar.harits.studentattendancesystem.feature.grade.GradeActivity"
+            android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar" />
+        <activity
+            android:name="id.bachtiar.harits.studentattendancesystem.feature.form.FormActivity"
+            android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar" />
     </application>
 
 </manifest>

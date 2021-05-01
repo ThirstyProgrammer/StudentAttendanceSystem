@@ -11,6 +11,10 @@ data class Student(
     val religion: String,
     val attendance: List<StudentAttendance>
 ) : Parcelable {
+
+    @IgnoredOnParcel
+    private var totalPresent: Int = 0
+
     @IgnoredOnParcel
     private var totalSick: Int = 0
 
@@ -23,14 +27,15 @@ data class Student(
     init {
         attendance.forEach {
             when (it.status) {
+                Attendance.Status.PRESENT -> totalPresent += 1
                 Attendance.Status.SICK -> totalSick += 1
                 Attendance.Status.PERMIT -> totalPermit += 1
                 Attendance.Status.NEGLECT -> totalNeglect += 1
-                else -> {}
             }
         }
     }
 
+    fun getTotalPresent(): String = totalPresent.toString()
     fun getTotalSick(): String = totalSick.toString()
     fun getTotalPermit(): String = totalPermit.toString()
     fun getTotalNeglect(): String = totalNeglect.toString()

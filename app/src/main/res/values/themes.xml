@@ -13,4 +13,54 @@
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
     </style>
+
+    <style name="Layout">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+
+    </style>
+
+    <style name="Layout.Horizontal">
+        <item name="android:orientation">horizontal</item>
+    </style>
+
+    <style name="Layout.Vertical">
+        <item name="android:orientation">vertical</item>
+    </style>
+
+    <!-- Button Style -->
+    <style name="ButtonPrimary" parent="Widget.AppCompat.Button">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@drawable/bg_button_primary</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">@dimen/normal_text_size</item>
+        <item name="android:textColor">@color/purple_700</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:paddingStart">@dimen/padding_32</item>
+        <item name="android:paddingEnd">@dimen/padding_32</item>
+    </style>
+
+    <style name="TextStyle" parent="@style/Theme.AppCompat">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginStart">16dp</item>
+        <item name="android:layout_marginEnd">16dp</item>
+        <item name="android:textSize">@dimen/normal_text_size</item>
+        <item name="android:textColor">#000000</item>
+    </style>
+
+    <style name="TextStyle.Bold" parent="TextStyle">
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="TextStyle.Title" parent="TextStyle.Bold">
+        <item name="android:textSize">@dimen/big_text_size</item>
+        <item name="android:textAlignment">center</item>
+    </style>
+
+    <style name="TextStyle.Subtitle" parent="TextStyle">
+        <item name="android:textAlignment">center</item>
+    </style>
+
 </resources>

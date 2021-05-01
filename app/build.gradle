@@ -4,6 +4,13 @@ plugins {
     id 'kotlin-parcelize'
     id 'androidx.navigation.safeargs'
     id 'org.jetbrains.kotlin.plugin.serialization' version '1.4.30'
+    id 'com.google.gms.google-services'
+}
+
+def keystoreProperties = new Properties()
+def keystorePropertiesFile = rootProject.file('keystore.properties')
+if (keystorePropertiesFile.exists()) {
+    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
 }
 
 android {
@@ -20,10 +27,61 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    flavorDimensions "version"
+    productFlavors {
+        development {
+            versionCode android.defaultConfig.versionCode
+            versionName android.defaultConfig.versionName + '-Dev'
+            dimension "version"
+        }
+        production {
+            versionCode android.defaultConfig.versionCode
+            versionName android.defaultConfig.versionName
+            dimension "version"
+        }
+    }
+
+    signingConfigs {
+        release {
+            keyAlias keystoreProperties['keyAlias']
+            keyPassword keystoreProperties['keyPassword']
+            storeFile file(keystoreProperties['storeFile'])
+            storePassword keystoreProperties['storePassword']
+        }
+        debug {
+            keyAlias keystoreProperties['keyAlias_debug']
+            keyPassword keystoreProperties['keyPassword_debug']
+            storeFile file(keystoreProperties['storeFile_debug'])
+            storePassword keystoreProperties['storePassword_debug']
+        }
+    }
+
     buildTypes {
         release {
-            minifyEnabled false
+            signingConfig signingConfigs.release
+            debuggable false
+            shrinkResources true
+            minifyEnabled true
+            zipAlignEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+
+        debug {
+            signingConfig signingConfigs.debug
+            debuggable true
+            minifyEnabled false
+            matchingFallbacks = ['release', 'debug']
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+
+        applicationVariants.all { variant ->
+            variant.outputs.each { output ->
+                if (buildType.name != "release") {
+                    output.outputFileName = "Sas-v${versionName}".replace(' ', "-") + ".apk"
+                } else {
+                    output.outputFileName = "Sas-v${versionName}" + ".apk"
+                }
+            }
         }
     }
     compileOptions {
@@ -57,6 +115,15 @@ dependencies {
 
     implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:1.1.0"
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.3'
+
+    implementation platform('com.google.firebase:firebase-bom:27.1.0')
+    implementation 'com.google.firebase:firebase-analytics-ktx'
+    implementation 'com.google.firebase:firebase-auth-ktx'
+
+    // Lottie
+    implementation 'com.airbnb.android:lottie:3.5.0'
+
+    implementation 'com.squareup.retrofit2:converter-moshi:2.9.0'
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'

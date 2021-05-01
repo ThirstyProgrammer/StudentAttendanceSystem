@@ -18,7 +18,7 @@ class StudentReportAdapter : RecyclerView.Adapter<StudentReportAdapter.StudentRe
     }
 
     override fun onBindViewHolder(holder: StudentReportViewHolder, position: Int) {
-        holder.bind(students[position])
+        holder.bind(students[position], listener)
         holder.itemView.setOnClickListener {
             listener.onItemClicked(students[position])
         }
@@ -39,12 +39,25 @@ class StudentReportAdapter : RecyclerView.Adapter<StudentReportAdapter.StudentRe
     inner class StudentReportViewHolder constructor(private val viewBinding: ItemStudentReportBinding) :
         RecyclerView.ViewHolder(viewBinding.root) {
 
-        fun bind(student: Student) {
+        fun bind(student: Student, listener: OnItemStudentReportClickCallback) {
             viewBinding.apply {
                 tvName.text = student.name
-                tvSick.text = "S = ${student.getTotalSick()}"
-                tvPermit.text = "I = ${student.getTotalPermit()}"
-                tvNeglect.text = "A = ${student.getTotalNeglect()}"
+                tvPresent.text = "Hadir\n${student.getTotalSick()}\nMapel"
+                tvSick.text = "Sakit\n${student.getTotalSick()}\nMapel"
+                tvPermit.text = "Izin\n${student.getTotalPermit()}\nMapel"
+                tvNeglect.text = "Alpa\n${student.getTotalNeglect()}\nMapel"
+                tvPresent.setOnClickListener {
+                    listener.onItemClicked(student)
+                }
+                tvSick.setOnClickListener {
+                    listener.onItemClicked(student)
+                }
+                tvPermit.setOnClickListener {
+                    listener.onItemClicked(student)
+                }
+                tvNeglect.setOnClickListener {
+                    listener.onItemClicked(student)
+                }
             }
         }
     }

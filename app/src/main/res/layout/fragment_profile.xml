@@ -11,7 +11,7 @@
         android:id="@+id/container_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white"
+        android:background="?attr/colorOnPrimary"
         android:paddingHorizontal="@dimen/padding_16"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -37,7 +37,7 @@
         android:id="@+id/container_grade"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white"
+        android:background="?attr/colorOnPrimary"
         android:paddingHorizontal="@dimen/padding_16"
         app:layout_constraintTop_toBottomOf="@id/container_name">
 
@@ -53,7 +53,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_toEndOf="@id/iv_grade"
-            android:background="@color/white"
             android:padding="@dimen/padding_16"
             android:textSize="16sp"
             tools:text="X IPA 1" />
@@ -63,7 +62,7 @@
         android:id="@+id/container_subjects"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white"
+        android:background="?attr/colorOnPrimary"
         android:paddingHorizontal="@dimen/padding_16"
         app:layout_constraintTop_toBottomOf="@+id/container_grade">
 
@@ -79,7 +78,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_toEndOf="@id/iv_subjects"
-            android:background="@color/white"
             android:padding="@dimen/padding_16"
             android:textSize="16sp"
             tools:text="Matematika, Fisika, Kimia" />
@@ -96,7 +94,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/padding_16"
-        android:background="@color/white"
+        android:background="?attr/colorOnPrimary"
         android:gravity="start"
         android:padding="@dimen/padding_16"
         android:text="@string/sign_out"
@@ -109,6 +107,7 @@
         android:layout_height="wrap_content"
         android:padding="@dimen/padding_16"
         android:textSize="14sp"
+        android:textColor="@android:color/darker_gray"
         app:layout_constraintTop_toBottomOf="@+id/appCompatTextView5"
         tools:text="StudentAttendanceSystem V1.0" />
 </androidx.constraintlayout.widget.ConstraintLayout>

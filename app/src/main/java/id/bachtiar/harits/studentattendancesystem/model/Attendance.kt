@@ -2,7 +2,7 @@ package id.bachtiar.harits.studentattendancesystem.model
 
 abstract class Attendance {
     abstract var status: Status
-    abstract val information: String
+    abstract var information: String
 
     enum class Status(value: String) {
         PRESENT("Hadir"),
@@ -17,6 +17,16 @@ abstract class Attendance {
                     SICK -> "Sakit"
                     PERMIT -> "Izin"
                     NEGLECT -> "Alpa"
+                }
+            }
+
+            fun getEnum(value: String): Status {
+                return when (value) {
+                    "Hadir" -> PRESENT
+                    "Sakit" -> SICK
+                    "Izin" -> PERMIT
+                    "Alpa" -> NEGLECT
+                    else -> PRESENT
                 }
             }
         }

@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "499392862706",
+    "project_id": "studentattendancesystem-df4c1",
+    "storage_bucket": "studentattendancesystem-df4c1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:499392862706:android:aaa3d6b825930d96e7b36b",
+        "android_client_info": {
+          "package_name": "id.bachtiar.harits.studentattendancesystem"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "499392862706-tralp82b0sg189h8ss097g7inceq2am5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "id.bachtiar.harits.studentattendancesystem",
+            "certificate_hash": "b6f39e56a9d69434dfba3dbc09bbe1cd18989e10"
+          }
+        },
+        {
+          "client_id": "499392862706-k8e9g79826mk8d6lheqsaqngcdd65vri.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA-DJ54d1XoyNCL8ZxknwIFDyf6RMQ4s5E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "499392862706-k8e9g79826mk8d6lheqsaqngcdd65vri.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
