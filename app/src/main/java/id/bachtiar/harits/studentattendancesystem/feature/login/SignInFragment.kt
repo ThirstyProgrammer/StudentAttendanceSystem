@@ -60,7 +60,15 @@ class SignInFragment : Fragment(), ViewState.RetryRequest {
     private fun submitLogin() {
         val email = viewBinding.email.text.toString()
         val password = viewBinding.password.text.toString()
-        viewModel.signInWithPassword(email, password, ::onSuccess, ::onFailed)
+        if (email.isNotEmpty() && password.isNotEmpty()) {
+            viewModel.signInWithPassword(email, password, ::onSuccess, ::onFailed)
+        } else {
+            Toast.makeText(
+                requireContext(),
+                "Masukkan email dan password anda",
+                Toast.LENGTH_SHORT
+            ).show()
+        }
     }
 
     private fun onSuccess() {

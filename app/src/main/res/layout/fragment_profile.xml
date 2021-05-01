@@ -90,7 +90,7 @@
         app:layout_constraintTop_toBottomOf="@id/container_subjects" />
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/appCompatTextView5"
+        android:id="@+id/btn_sign_out"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/padding_16"
@@ -108,6 +108,6 @@
         android:padding="@dimen/padding_16"
         android:textSize="14sp"
         android:textColor="@android:color/darker_gray"
-        app:layout_constraintTop_toBottomOf="@+id/appCompatTextView5"
+        app:layout_constraintTop_toBottomOf="@+id/btn_sign_out"
         tools:text="StudentAttendanceSystem V1.0" />
 </androidx.constraintlayout.widget.ConstraintLayout>

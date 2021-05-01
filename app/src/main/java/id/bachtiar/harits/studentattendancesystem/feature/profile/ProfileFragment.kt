@@ -5,6 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import id.bachtiar.harits.studentattendancesystem.BuildConfig
 import id.bachtiar.harits.studentattendancesystem.databinding.FragmentProfileBinding
 
@@ -18,6 +20,10 @@ class ProfileFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         viewBinding = FragmentProfileBinding.inflate(inflater, container, false)
+        viewModel = ViewModelProvider(
+            this,
+            ViewModelProvider.NewInstanceFactory()
+        ).get(ProfileViewModel::class.java)
         return viewBinding.root
     }
 
@@ -28,6 +34,12 @@ class ProfileFragment : Fragment() {
             tvGrade.text = "X IPA 1"
             tvSubjects.text = "Matematika, Fisika"
             tvVersion.text = "StudentAttendanceSystem V.${BuildConfig.VERSION_NAME}"
+            btnSignOut.setOnClickListener {
+                viewModel.signOut()
+                val directions = ProfileFragmentDirections.actionNavigationProfileToSplashActivity()
+                directions.isGoToSignIn = "true"
+                findNavController().navigate(directions)
+            }
         }
     }
 }

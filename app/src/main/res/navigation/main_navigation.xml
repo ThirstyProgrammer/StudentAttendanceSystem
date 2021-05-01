@@ -18,7 +18,11 @@
         android:id="@+id/navigation_profile"
         android:name="id.bachtiar.harits.studentattendancesystem.feature.profile.ProfileFragment"
         android:label="Profile"
-        tools:layout="@layout/fragment_report" />
+        tools:layout="@layout/fragment_report" >
+        <action
+            android:id="@+id/action_navigation_profile_to_splashActivity"
+            app:destination="@id/splash_activity" />
+    </fragment>
     <fragment
         android:id="@+id/navigation_report"
         android:name="id.bachtiar.harits.studentattendancesystem.feature.report.ReportFragment"
@@ -44,5 +48,15 @@
         <argument
             android:name="schedule"
             app:argType="id.bachtiar.harits.studentattendancesystem.model.Schedule" />
+    </activity>
+    <activity
+        android:id="@+id/splash_activity"
+        android:name="id.bachtiar.harits.studentattendancesystem.feature.splash.SplashActivity"
+        android:label="SplashActivity" >
+        <argument
+            android:name="isGoToSignIn"
+            app:argType="string"
+            android:defaultValue="false"
+            app:nullable="true" />
     </activity>
 </navigation>

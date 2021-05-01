@@ -17,6 +17,15 @@ class SplashActivity : AppCompatActivity() {
 
         val navHostFragment: NavHostFragment =
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
-        navHostFragment.navController.setGraph(R.navigation.user_navigation)
+        val navController = navHostFragment.navController
+        navController.setGraph(R.navigation.user_navigation, intent.extras)
+
+        if (intent.extras != null) {
+            val isGoToSignIn: Boolean =
+                SplashActivityArgs.fromBundle(intent.extras as Bundle).isGoToSignIn.toBoolean()
+            if (isGoToSignIn) {
+                navController.navigate(R.id.signin_fragment)
+            }
+        }
     }
 }
