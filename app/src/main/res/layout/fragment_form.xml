@@ -123,6 +123,7 @@
                 android:layout_height="wrap_content">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/teaching_media"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
             </com.google.android.material.textfield.TextInputLayout>
@@ -142,6 +143,7 @@
                 android:layout_height="wrap_content">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/learning_materials"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
             </com.google.android.material.textfield.TextInputLayout>
@@ -164,6 +166,7 @@
                 app:layout_constraintTop_toBottomOf="@id/til_learning_materials">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/obstacles_and_solution"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 
@@ -194,6 +197,7 @@
                     android:id="@+id/rv_students"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:overScrollMode="never"
                     tools:layout_editor_absoluteX="16dp" />
 
                 <TextView
@@ -204,7 +208,7 @@
                     android:layout_margin="@dimen/padding_16"
                     android:layout_marginTop="16dp"
                     android:layout_marginBottom="153dp"
-                    android:text="TIdak Ada"
+                    android:text="@string/not_exists"
                     android:textSize="14sp" />
             </RelativeLayout>
 
@@ -221,6 +225,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/container_students" />
 
             <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_submit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"

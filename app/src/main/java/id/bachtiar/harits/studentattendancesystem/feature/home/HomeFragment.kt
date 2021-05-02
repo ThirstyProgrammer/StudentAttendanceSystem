@@ -1,5 +1,6 @@
 package id.bachtiar.harits.studentattendancesystem.feature.home
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,9 +10,9 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import id.bachtiar.harits.studentattendancesystem.DummyHome
 import id.bachtiar.harits.studentattendancesystem.databinding.FragmentHomeBinding
-import id.bachtiar.harits.studentattendancesystem.model.Schedule
+import id.bachtiar.harits.studentattendancesystem.model.firebase.ScheduleModel
+import id.bachtiar.harits.studentattendancesystem.util.Constant
 
 class HomeFragment : Fragment(), ScheduleAdapter.OnItemScheduleClickCallback {
 
@@ -33,6 +34,10 @@ class HomeFragment : Fragment(), ScheduleAdapter.OnItemScheduleClickCallback {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel.sharedPreferences = requireActivity().application.getSharedPreferences(
+            Constant.Config.APP_PREFERENCE,
+            Context.MODE_PRIVATE
+        )
         scheduleAdapter = ScheduleAdapter()
         scheduleAdapter.setOnItemClickCallback(this)
         val linearLayoutManager = LinearLayoutManager(requireContext())
@@ -44,11 +49,15 @@ class HomeFragment : Fragment(), ScheduleAdapter.OnItemScheduleClickCallback {
             adapter = scheduleAdapter
             addItemDecoration(dividerItemDecoration)
         }
-        scheduleAdapter.setData(DummyHome.data)
-        viewModel.getData()
+        viewModel.getUserData { collectionPath ->
+            viewModel.getSchedule(collectionPath) { schedules ->
+                scheduleAdapter.setData(schedules)
+            }
+        }
+//        viewModel.submitData()
     }
 
-    override fun onItemClicked(data: Schedule) {
+    override fun onItemClicked(data: ScheduleModel) {
         val toFormActivity = HomeFragmentDirections.actionNavigationHomeToFormActivity(data)
         findNavController().navigate(toFormActivity)
     }

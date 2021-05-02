@@ -1,35 +1,9 @@
 package id.bachtiar.harits.studentattendancesystem.model
 
+import id.bachtiar.harits.studentattendancesystem.model.firebase.StudentAttendanceModel
+
 abstract class Attendance {
-    abstract var status: Status
+    abstract var status: StudentAttendanceModel.Status
     abstract var information: String
-
-    enum class Status(value: String) {
-        PRESENT("Hadir"),
-        SICK("Sakit"),
-        PERMIT("Izin"),
-        NEGLECT("Alpa");
-
-        companion object {
-            fun getValue(status: Status): String {
-                return when (status) {
-                    PRESENT -> "Hadir"
-                    SICK -> "Sakit"
-                    PERMIT -> "Izin"
-                    NEGLECT -> "Alpa"
-                }
-            }
-
-            fun getEnum(value: String): Status {
-                return when (value) {
-                    "Hadir" -> PRESENT
-                    "Sakit" -> SICK
-                    "Izin" -> PERMIT
-                    "Alpa" -> NEGLECT
-                    else -> PRESENT
-                }
-            }
-        }
-    }
 }
 

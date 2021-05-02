@@ -5,16 +5,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import id.bachtiar.harits.studentattendancesystem.databinding.FragmentGradeBinding
-import id.bachtiar.harits.studentattendancesystem.model.Grade
-import id.bachtiar.harits.studentattendancesystem.model.Student
+import id.bachtiar.harits.studentattendancesystem.model.firebase.GradeModel
+import id.bachtiar.harits.studentattendancesystem.model.firebase.StudentModel
+import java.util.*
 
 class GradeFragment : Fragment(), StudentReportAdapter.OnItemStudentReportClickCallback {
 
     private lateinit var viewBinding: FragmentGradeBinding
+    private lateinit var viewModel: GradeViewModel
     private lateinit var studentReportAdapter: StudentReportAdapter
 
     override fun onCreateView(
@@ -23,13 +26,17 @@ class GradeFragment : Fragment(), StudentReportAdapter.OnItemStudentReportClickC
         savedInstanceState: Bundle?
     ): View? {
         viewBinding = FragmentGradeBinding.inflate(inflater, container, false)
+        viewModel = ViewModelProvider(
+            this,
+            ViewModelProvider.NewInstanceFactory()
+        ).get(GradeViewModel::class.java)
         return viewBinding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val grade: Grade = GradeFragmentArgs.fromBundle(arguments as Bundle).grade
+        val grade: GradeModel = GradeFragmentArgs.fromBundle(arguments as Bundle).grade
         studentReportAdapter = StudentReportAdapter()
         studentReportAdapter.setOnItemClickCallback(this)
         viewBinding.apply {
@@ -44,7 +51,7 @@ class GradeFragment : Fragment(), StudentReportAdapter.OnItemStudentReportClickC
 //            })
             tvName.text = grade.name
             tvHomeroomTeacher.text = grade.homeroomTeacher
-            tvTotalStudent.text = grade.getTotalStudents()
+            tvTotalStudent.text = grade.students.toString()
 
             val linearLayoutManager = LinearLayoutManager(requireContext())
             val dividerItemDecoration =
@@ -58,12 +65,19 @@ class GradeFragment : Fragment(), StudentReportAdapter.OnItemStudentReportClickC
             btnBack.setOnClickListener {
                 requireActivity().finish()
             }
-            studentReportAdapter.setData(grade.students)
+            getData(grade.name.toString())
         }
     }
 
-    override fun onItemClicked(data: Student) {
+    override fun onItemClicked(data: StudentModel) {
         val toStudentFragment = GradeFragmentDirections.actionGradeFragmentToStudentFragment(data)
         findNavController().navigate(toStudentFragment)
+    }
+
+    private fun getData(gradeName: String) {
+        val collectionPath = gradeName.replace("\\s".toRegex(), "").toUpperCase(Locale.ROOT)
+        viewModel.getData(collectionPath) { data ->
+            studentReportAdapter.setData(data)
+        }
     }
 }

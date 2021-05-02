@@ -5,12 +5,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import id.bachtiar.harits.studentattendancesystem.DummyReport
 import id.bachtiar.harits.studentattendancesystem.databinding.FragmentReportBinding
-import id.bachtiar.harits.studentattendancesystem.model.Grade
+import id.bachtiar.harits.studentattendancesystem.model.firebase.GradeModel
 
 class ReportFragment : Fragment(), GradeAdapter.OnItemGradeClickCallback {
 
@@ -23,6 +23,10 @@ class ReportFragment : Fragment(), GradeAdapter.OnItemGradeClickCallback {
         savedInstanceState: Bundle?
     ): View? {
         viewBinding = FragmentReportBinding.inflate(inflater, container, false)
+        viewModel = ViewModelProvider(
+            this,
+            ViewModelProvider.NewInstanceFactory()
+        ).get(ReportViewModel::class.java)
         return viewBinding.root
     }
 
@@ -39,10 +43,13 @@ class ReportFragment : Fragment(), GradeAdapter.OnItemGradeClickCallback {
             adapter = gradeAdapter
             addItemDecoration(dividerItemDecoration)
         }
-        gradeAdapter.setData(DummyReport.data)
+//        gradeAdapter.setData(DummyReport.data)
+        viewModel.getData { data ->
+            gradeAdapter.setData(data)
+        }
     }
 
-    override fun onItemClicked(data: Grade) {
+    override fun onItemClicked(data: GradeModel) {
         val toGradeActivity = ReportFragmentDirections.actionNavigationReportToGradeActivity(data)
         findNavController().navigate(toGradeActivity)
     }

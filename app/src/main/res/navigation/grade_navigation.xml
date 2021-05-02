@@ -9,20 +9,20 @@
         android:name="id.bachtiar.harits.studentattendancesystem.feature.grade.GradeFragment"
         android:label="GradeFragment"
         tools:layout="@layout/fragment_grade">
-        <argument
-            android:name="grade"
-            app:argType="id.bachtiar.harits.studentattendancesystem.model.Grade" />
         <action
             android:id="@+id/action_grade_fragment_to_studentFragment"
             app:destination="@id/studentFragment" />
+        <argument
+            android:name="grade"
+            app:argType="id.bachtiar.harits.studentattendancesystem.model.firebase.GradeModel" />
     </fragment>
     <fragment
         android:id="@+id/studentFragment"
         android:name="id.bachtiar.harits.studentattendancesystem.feature.student.StudentFragment"
         android:label="StudentFragment"
-        tools:layout="@layout/fragment_student" >
+        tools:layout="@layout/fragment_student">
         <argument
             android:name="student"
-            app:argType="id.bachtiar.harits.studentattendancesystem.model.Student" />
+            app:argType="id.bachtiar.harits.studentattendancesystem.model.firebase.StudentModel" />
     </fragment>
 </navigation>

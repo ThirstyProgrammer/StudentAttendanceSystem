@@ -4,13 +4,13 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import id.bachtiar.harits.studentattendancesystem.databinding.ItemSchedulesBinding
-import id.bachtiar.harits.studentattendancesystem.model.Attendance
-import id.bachtiar.harits.studentattendancesystem.model.Schedule
+import id.bachtiar.harits.studentattendancesystem.model.firebase.ScheduleModel
+import id.bachtiar.harits.studentattendancesystem.util.StringHelper
 
 class ScheduleAdapter : RecyclerView.Adapter<ScheduleAdapter.ScheduleViewHolder>() {
 
     private lateinit var listener: OnItemScheduleClickCallback
-    private var schedules = ArrayList<Schedule>()
+    private var schedules = ArrayList<ScheduleModel>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ScheduleViewHolder {
         val binding: ItemSchedulesBinding =
@@ -31,7 +31,7 @@ class ScheduleAdapter : RecyclerView.Adapter<ScheduleAdapter.ScheduleViewHolder>
         this.listener = onItemScheduleClickCallback
     }
 
-    fun setData(data: List<Schedule>) {
+    fun setData(data: List<ScheduleModel>) {
         schedules.clear()
         schedules.addAll(data)
         notifyDataSetChanged()
@@ -40,18 +40,18 @@ class ScheduleAdapter : RecyclerView.Adapter<ScheduleAdapter.ScheduleViewHolder>
     inner class ScheduleViewHolder constructor(private val viewBinding: ItemSchedulesBinding) :
         RecyclerView.ViewHolder(viewBinding.root) {
 
-        fun bind(schedule: Schedule) {
+        fun bind(schedule: ScheduleModel) {
             viewBinding.apply {
-                tvName.text = schedule.subjects
+                tvName.text = schedule.subject
                 tvGrade.text = schedule.grade
                 tvIntervalHour.text =
                     "${schedule.startTime} - ${schedule.endTime}"
-                tvDate.text = "${schedule.day}, 18 April 2021"
+                tvDate.text = StringHelper.getCurrentDate()
             }
         }
     }
 
     interface OnItemScheduleClickCallback {
-        fun onItemClicked(data: Schedule)
+        fun onItemClicked(data: ScheduleModel)
     }
 }

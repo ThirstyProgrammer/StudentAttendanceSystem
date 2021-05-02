@@ -39,7 +39,7 @@
         tools:layout="@layout/activity_grade">
         <argument
             android:name="grade"
-            app:argType="id.bachtiar.harits.studentattendancesystem.model.Grade" />
+            app:argType="id.bachtiar.harits.studentattendancesystem.model.firebase.GradeModel" />
     </activity>
     <activity
         android:id="@+id/form_activity"
@@ -47,7 +47,7 @@
         android:label="FormActivity">
         <argument
             android:name="schedule"
-            app:argType="id.bachtiar.harits.studentattendancesystem.model.Schedule" />
+            app:argType="id.bachtiar.harits.studentattendancesystem.model.firebase.ScheduleModel" />
     </activity>
     <activity
         android:id="@+id/splash_activity"

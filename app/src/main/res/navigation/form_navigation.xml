@@ -10,6 +10,6 @@
         android:label="FormFragment">
         <argument
             android:name="schedule"
-            app:argType="id.bachtiar.harits.studentattendancesystem.model.Schedule" />
+            app:argType="id.bachtiar.harits.studentattendancesystem.model.firebase.ScheduleModel" />
     </fragment>
 </navigation>

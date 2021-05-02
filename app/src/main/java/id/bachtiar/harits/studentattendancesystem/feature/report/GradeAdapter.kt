@@ -4,12 +4,12 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import id.bachtiar.harits.studentattendancesystem.databinding.ItemGradeBinding
-import id.bachtiar.harits.studentattendancesystem.model.Grade
+import id.bachtiar.harits.studentattendancesystem.model.firebase.GradeModel
 
 class GradeAdapter : RecyclerView.Adapter<GradeAdapter.GradeViewHolder>() {
 
     private lateinit var listener: OnItemGradeClickCallback
-    private var grades = ArrayList<Grade>()
+    private var grades = ArrayList<GradeModel>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GradeViewHolder {
         val binding: ItemGradeBinding =
@@ -30,7 +30,7 @@ class GradeAdapter : RecyclerView.Adapter<GradeAdapter.GradeViewHolder>() {
         this.listener = onItemClickCallback
     }
 
-    fun setData(data: List<Grade>) {
+    fun setData(data: List<GradeModel>) {
         grades.clear()
         grades.addAll(data)
         notifyDataSetChanged()
@@ -39,16 +39,16 @@ class GradeAdapter : RecyclerView.Adapter<GradeAdapter.GradeViewHolder>() {
     inner class GradeViewHolder constructor(private val viewBinding: ItemGradeBinding) :
         RecyclerView.ViewHolder(viewBinding.root) {
 
-        fun bind(grade: Grade) {
+        fun bind(grade: GradeModel) {
             viewBinding.apply {
                 tvName.text = grade.name
                 tvHomeroomTeacher.text = grade.homeroomTeacher
-                tvTotalStudent.text = grade.getTotalStudents()
+                tvTotalStudent.text = grade.students.toString()
             }
         }
     }
 
     interface OnItemGradeClickCallback {
-        fun onItemClicked(data: Grade)
+        fun onItemClicked(data: GradeModel)
     }
 }

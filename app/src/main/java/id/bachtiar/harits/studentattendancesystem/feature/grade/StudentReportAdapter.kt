@@ -1,15 +1,16 @@
 package id.bachtiar.harits.studentattendancesystem.feature.grade
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import id.bachtiar.harits.studentattendancesystem.databinding.ItemStudentReportBinding
-import id.bachtiar.harits.studentattendancesystem.model.Student
+import id.bachtiar.harits.studentattendancesystem.model.firebase.StudentModel
 
 class StudentReportAdapter : RecyclerView.Adapter<StudentReportAdapter.StudentReportViewHolder>() {
 
     private lateinit var listener: OnItemStudentReportClickCallback
-    private var students = ArrayList<Student>()
+    private var students = ArrayList<StudentModel>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StudentReportViewHolder {
         val binding: ItemStudentReportBinding =
@@ -30,7 +31,7 @@ class StudentReportAdapter : RecyclerView.Adapter<StudentReportAdapter.StudentRe
         this.listener = onItemClickCallback
     }
 
-    fun setData(data: List<Student>) {
+    fun setData(data: List<StudentModel>) {
         students.clear()
         students.addAll(data)
         notifyDataSetChanged()
@@ -39,13 +40,13 @@ class StudentReportAdapter : RecyclerView.Adapter<StudentReportAdapter.StudentRe
     inner class StudentReportViewHolder constructor(private val viewBinding: ItemStudentReportBinding) :
         RecyclerView.ViewHolder(viewBinding.root) {
 
-        fun bind(student: Student, listener: OnItemStudentReportClickCallback) {
+        fun bind(student: StudentModel, listener: OnItemStudentReportClickCallback) {
             viewBinding.apply {
                 tvName.text = student.name
-                tvPresent.text = "Hadir\n${student.getTotalSick()}\nMapel"
-                tvSick.text = "Sakit\n${student.getTotalSick()}\nMapel"
-                tvPermit.text = "Izin\n${student.getTotalPermit()}\nMapel"
-                tvNeglect.text = "Alpa\n${student.getTotalNeglect()}\nMapel"
+                tvPresent.text = "Hadir\n${student.present}\nMapel"
+                tvSick.text = "Sakit\n${student.sick}\nMapel"
+                tvPermit.text = "Izin\n${student.permit}\nMapel"
+                tvNeglect.text = "Alpa\n${student.neglect}\nMapel"
                 tvPresent.setOnClickListener {
                     listener.onItemClicked(student)
                 }
@@ -63,6 +64,6 @@ class StudentReportAdapter : RecyclerView.Adapter<StudentReportAdapter.StudentRe
     }
 
     interface OnItemStudentReportClickCallback {
-        fun onItemClicked(data: Student)
+        fun onItemClicked(data: StudentModel)
     }
 }
