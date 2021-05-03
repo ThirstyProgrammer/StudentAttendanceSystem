@@ -40,6 +40,7 @@ class StudentNotPresentAdapter :
         val position = items.indexOf(studentNotPresent)
         items.remove(studentNotPresent)
         notifyItemRemoved(position)
+        listener.onItemRemoved(studentNotPresent)
         if (items.isEmpty()) listener.onEmptyList()
     }
 
@@ -62,4 +63,5 @@ class StudentNotPresentAdapter :
 
 interface StudentNotPresentAdapterListener {
     fun onEmptyList()
+    fun onItemRemoved(studentNotPresent: StudentDialog)
 }

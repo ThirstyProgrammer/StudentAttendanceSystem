@@ -18,7 +18,7 @@ class DialogStudentNotPresent : DialogFragment() {
 
     private lateinit var viewBinding: DialogStudentNotPresentBinding
     private lateinit var listener: DialogListener
-    var students: List<StudentModel> = arrayListOf()
+    var studentItems: ArrayList<String> = arrayListOf()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -38,10 +38,6 @@ class DialogStudentNotPresent : DialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewBinding.apply {
-            val studentItems = ArrayList<String>()
-            students.forEach {
-                studentItems.add(it.name.toDash())
-            }
             spStudent.adapter = ArrayAdapter(requireContext(), R.layout.item_spinner, studentItems)
             val spinnerItems = ArrayList<String>()
             spinnerItems.add("Sakit")
@@ -57,6 +53,7 @@ class DialogStudentNotPresent : DialogFragment() {
                     status = StudentAttendanceModel.Status.getEnum(spStatus.selectedItem.toString()),
                     information = etInformation.text.toString()
                 )
+                studentItems.remove(spStudent.selectedItem)
                 listener.onButtonPositiveClicked(studentDialog)
                 dialog?.dismiss()
             }

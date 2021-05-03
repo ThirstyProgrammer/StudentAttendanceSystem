@@ -6,16 +6,11 @@ import androidx.lifecycle.ViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import id.bachtiar.harits.studentattendancesystem.model.Profile
+import id.bachtiar.harits.studentattendancesystem.model.firebase.UserModel
 import id.bachtiar.harits.studentattendancesystem.util.*
 import id.mufid.android.widget.ViewState
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
 
 abstract class BaseViewModel : ViewModel() {
-
-    private val viewModelJob = SupervisorJob()
-    val uiScope = (CoroutineScope(Dispatchers.Main + viewModelJob))
 
     val mutableViewState: MutableLiveData<ViewState> = MutableLiveData()
     var user: FirebaseUser? = null
@@ -24,11 +19,12 @@ abstract class BaseViewModel : ViewModel() {
         val user = sharedPreferences.getUserProfile()
     }
 
-    fun setupPreferenceAfterSignIn(sharedPreferences: SharedPreferences) {
+    fun setupPreferenceAfterSignIn(sharedPreferences: SharedPreferences, userDocument: UserModel) {
         if (user != null) {
             sharedPreferences.setupProfileResults(
                 Profile(Constant.EMPTY_STRING).convertToStringJson(
-                    user!!
+                    user!!,
+                    userDocument
                 )
             )
             user!!.getIdToken(true).addOnCompleteListener {
@@ -55,45 +51,5 @@ abstract class BaseViewModel : ViewModel() {
         if (user != null) {
             this.user = user
         }
-    }
-
-    fun isEmailVerified(): Boolean = user?.isEmailVerified ?: false
-
-    fun reloadOnComplete(
-        firebaseAuth: FirebaseAuth,
-        sharedPreferences: SharedPreferences,
-        onComplete: () -> Unit
-    ) {
-        reloadOnEmailVerified(firebaseAuth, sharedPreferences, onComplete, onComplete, onComplete)
-    }
-
-    fun reloadOnEmailVerified(
-        firebaseAuth: FirebaseAuth,
-        sharedPreferences: SharedPreferences,
-        onEmailVerified: () -> Unit,
-        onEmailNotVerified: () -> Unit,
-        onUserNotLogin: () -> Unit
-    ) {
-        handleFirebaseLoading()
-        setUser(firebaseAuth)
-        if (user != null) {
-            user!!.reload().addOnCompleteListener {
-                if (user!!.isEmailVerified) {
-                    setupPreferenceAfterSignIn(sharedPreferences)
-                    onEmailVerified()
-                } else {
-                    onEmailNotVerified()
-                }
-                handleFirebaseComplete()
-            }
-        } else {
-            onUserNotLogin()
-            handleFirebaseComplete()
-        }
-    }
-
-    override fun onCleared() {
-        super.onCleared()
-        viewModelJob.cancel()
     }
 }

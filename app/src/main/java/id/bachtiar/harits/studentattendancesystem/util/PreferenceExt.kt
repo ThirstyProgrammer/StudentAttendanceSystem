@@ -54,6 +54,12 @@ fun SharedPreferences.getUserProfile(): ProfileModel {
     return Profile(jsonProfile).userProfile
 }
 
+fun SharedPreferences.getUserName(): String {
+    val jsonProfile = getString(Constant.Preference.USER_PROFILE_RESULT, Constant.EMPTY_STRING)
+        ?: Constant.EMPTY_STRING
+    return Profile(jsonProfile).userProfile.username
+}
+
 fun SharedPreferences.getProfile(): Profile {
     val jsonProfile = getString(Constant.Preference.USER_PROFILE_RESULT, Constant.EMPTY_STRING)
         ?: Constant.EMPTY_STRING

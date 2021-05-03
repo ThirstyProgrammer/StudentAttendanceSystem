@@ -20,30 +20,6 @@ class HomeViewModel : ViewModel() {
 
     val TAG = "HOME_VIEW_MODEL"
     private var db = Firebase.firestore
-    private val usersCollection = db.collection("USERS")
-
-    fun getUserEmail(): String {
-        return sharedPreferences.getUserProfile().email
-    }
-
-    fun getUserData(onSuccess: (collectionPath: String) -> Unit) {
-        usersCollection.get()
-            .addOnSuccessListener { result ->
-                result.forEach { document ->
-                    val user = document.toObject<UserModel>()
-                    if (user.email == getUserEmail()) {
-                        val name = user.name ?: ""
-                        val collectionPath = name.replace("\\s".toRegex(), "").toUpperCase(
-                            Locale.ROOT
-                        )
-                        onSuccess(collectionPath)
-                    }
-                }
-            }
-            .addOnFailureListener { exception ->
-                Log.d(TAG, "Error getting documents: ", exception)
-            }
-    }
 
     fun getSchedule(collectionPath: String, onSuccess: (data: ArrayList<ScheduleModel>) -> Unit) {
         db.collection(collectionPath)
@@ -61,19 +37,4 @@ class HomeViewModel : ViewModel() {
                 Log.d(TAG, "Error getting documents: ", exception)
             }
     }
-
-//    fun submitData() {
-//        DummyReport.studentsIPS1.forEachIndexed { index, studentModel ->
-//            val document = studentModel.name!!.replace("\\s".toRegex(), "")
-//            val gradeCollection = db.collection("XIPS1")
-////            if (index == 0) {
-////                DummyReport.studentAttendance.forEach { attendance ->
-////                    val trimDate = attendance.date!!.replace("\\s".toRegex(), "")
-////                    val documentString = attendance.subject + "-" + trimDate
-////                    db.collection(document.toUpperCase()).document(documentString).set(attendance)
-////                }
-////            }
-//            gradeCollection.document(document.toUpperCase(Locale.ROOT)).set(studentModel)
-//        }
-//    }
 }

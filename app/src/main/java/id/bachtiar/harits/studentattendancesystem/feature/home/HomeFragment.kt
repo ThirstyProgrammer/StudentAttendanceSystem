@@ -13,6 +13,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import id.bachtiar.harits.studentattendancesystem.databinding.FragmentHomeBinding
 import id.bachtiar.harits.studentattendancesystem.model.firebase.ScheduleModel
 import id.bachtiar.harits.studentattendancesystem.util.Constant
+import id.bachtiar.harits.studentattendancesystem.util.getUserName
+import id.bachtiar.harits.studentattendancesystem.util.toCollectionOrDocumentPath
 
 class HomeFragment : Fragment(), ScheduleAdapter.OnItemScheduleClickCallback {
 
@@ -29,15 +31,15 @@ class HomeFragment : Fragment(), ScheduleAdapter.OnItemScheduleClickCallback {
             this,
             ViewModelProvider.NewInstanceFactory()
         ).get(HomeViewModel::class.java)
+        viewModel.sharedPreferences = requireActivity().application.getSharedPreferences(
+            Constant.Config.APP_PREFERENCE,
+            Context.MODE_PRIVATE
+        )
         return viewBinding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.sharedPreferences = requireActivity().application.getSharedPreferences(
-            Constant.Config.APP_PREFERENCE,
-            Context.MODE_PRIVATE
-        )
         scheduleAdapter = ScheduleAdapter()
         scheduleAdapter.setOnItemClickCallback(this)
         val linearLayoutManager = LinearLayoutManager(requireContext())
@@ -49,12 +51,11 @@ class HomeFragment : Fragment(), ScheduleAdapter.OnItemScheduleClickCallback {
             adapter = scheduleAdapter
             addItemDecoration(dividerItemDecoration)
         }
-        viewModel.getUserData { collectionPath ->
-            viewModel.getSchedule(collectionPath) { schedules ->
-                scheduleAdapter.setData(schedules)
-            }
+        viewModel.getSchedule(
+            viewModel.sharedPreferences.getUserName().toCollectionOrDocumentPath()
+        ) { schedules ->
+            scheduleAdapter.setData(schedules)
         }
-//        viewModel.submitData()
     }
 
     override fun onItemClicked(data: ScheduleModel) {

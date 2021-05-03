@@ -1,5 +1,6 @@
 package id.bachtiar.harits.studentattendancesystem.feature.profile
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,6 +10,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import id.bachtiar.harits.studentattendancesystem.BuildConfig
 import id.bachtiar.harits.studentattendancesystem.databinding.FragmentProfileBinding
+import id.bachtiar.harits.studentattendancesystem.util.Constant
+import id.bachtiar.harits.studentattendancesystem.util.getUserProfile
 
 class ProfileFragment : Fragment() {
 
@@ -24,16 +27,21 @@ class ProfileFragment : Fragment() {
             this,
             ViewModelProvider.NewInstanceFactory()
         ).get(ProfileViewModel::class.java)
+        viewModel.sharedPreferences = requireActivity().application.getSharedPreferences(
+            Constant.Config.APP_PREFERENCE,
+            Context.MODE_PRIVATE
+        )
         return viewBinding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewBinding.apply {
-            tvName.text = "Eny Purwaningsih, S.Pd"
-            tvGrade.text = "X IPA 1"
-            tvSubjects.text = "Matematika, Fisika"
-            tvVersion.text = "StudentAttendanceSystem V.${BuildConfig.VERSION_NAME}"
+            val profile = viewModel.sharedPreferences.getUserProfile()
+            tvName.text = profile.username
+            tvGrade.text = profile.grades
+            tvSubjects.text = profile.subjects
+            tvVersion.text = "Simon V.${BuildConfig.VERSION_NAME}"
             btnSignOut.setOnClickListener {
                 viewModel.signOut()
                 val directions = ProfileFragmentDirections.actionNavigationProfileToSplashActivity()

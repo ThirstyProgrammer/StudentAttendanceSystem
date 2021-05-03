@@ -14,4 +14,10 @@
     <string name="sign_out">Keluar</string>
     <string name="empty_attendance_data">Data Absensi Belum Tersedia</string>
     <string name="not_exists">TIdak Ada</string>
+    <string name="add_student_not_present">Murid Tidak Hadir</string>
+    <string name="submit">Simpan</string>
+    <string name="student_not_present">Murid Tidak Hadir</string>
+    <string name="login">Login</string>
+    <string name="password">Password</string>
+    <string name="username">Username</string>
 </resources>

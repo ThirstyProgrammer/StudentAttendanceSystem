@@ -1,5 +1,6 @@
 package id.bachtiar.harits.studentattendancesystem.feature.report
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,6 +12,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import id.bachtiar.harits.studentattendancesystem.databinding.FragmentReportBinding
 import id.bachtiar.harits.studentattendancesystem.model.firebase.GradeModel
+import id.bachtiar.harits.studentattendancesystem.util.Constant
 
 class ReportFragment : Fragment(), GradeAdapter.OnItemGradeClickCallback {
 
@@ -27,6 +29,10 @@ class ReportFragment : Fragment(), GradeAdapter.OnItemGradeClickCallback {
             this,
             ViewModelProvider.NewInstanceFactory()
         ).get(ReportViewModel::class.java)
+        viewModel.sharedPreferences = requireActivity().application.getSharedPreferences(
+            Constant.Config.APP_PREFERENCE,
+            Context.MODE_PRIVATE
+        )
         return viewBinding.root
     }
 

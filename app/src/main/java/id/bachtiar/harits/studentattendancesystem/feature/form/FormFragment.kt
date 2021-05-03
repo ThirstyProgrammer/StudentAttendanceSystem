@@ -1,5 +1,6 @@
 package id.bachtiar.harits.studentattendancesystem.feature.form
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,9 +14,9 @@ import id.bachtiar.harits.studentattendancesystem.databinding.FragmentFormBindin
 import id.bachtiar.harits.studentattendancesystem.model.AttendanceForm
 import id.bachtiar.harits.studentattendancesystem.model.StudentDialog
 import id.bachtiar.harits.studentattendancesystem.model.firebase.ScheduleModel
-import id.bachtiar.harits.studentattendancesystem.util.StringHelper
-import id.bachtiar.harits.studentattendancesystem.util.setViewVisibility
-import id.bachtiar.harits.studentattendancesystem.util.toEmpty
+import id.bachtiar.harits.studentattendancesystem.model.firebase.StudentAttendanceModel
+import id.bachtiar.harits.studentattendancesystem.model.firebase.StudentModel
+import id.bachtiar.harits.studentattendancesystem.util.*
 import java.util.*
 
 class FormFragment : Fragment(), DialogListener, StudentNotPresentAdapterListener {
@@ -41,6 +42,11 @@ class FormFragment : Fragment(), DialogListener, StudentNotPresentAdapterListene
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel.sharedPreferences = requireActivity().application.getSharedPreferences(
+            Constant.Config.APP_PREFERENCE,
+            Context.MODE_PRIVATE
+        )
+
         scheduleModel = FormFragmentArgs.fromBundle(arguments as Bundle).schedule
         studentNotPresentAdapter = StudentNotPresentAdapter()
         studentNotPresentAdapter.setListener(this)
@@ -70,7 +76,7 @@ class FormFragment : Fragment(), DialogListener, StudentNotPresentAdapterListene
                 addItemDecoration(dividerItemDecoration)
             }
             btnSubmit.setOnClickListener {
-//                generateFormData()
+                generateFormData()
             }
         }
         getStudents(scheduleModel.grade.toEmpty())
@@ -91,10 +97,16 @@ class FormFragment : Fragment(), DialogListener, StudentNotPresentAdapterListene
         }
     }
 
+    override fun onItemRemoved(studentNotPresent: StudentDialog) {
+        dialog.studentItems.add(studentNotPresent.student)
+    }
+
     private fun getStudents(grade: String) {
-        val collectionPath = grade.replace("\\s".toRegex(), "").toUpperCase(Locale.ROOT)
+        val collectionPath = grade.toCollectionOrDocumentPath()
         viewModel.getStudentByClass(collectionPath) { data ->
-            dialog.students = data
+            data.forEach {
+                dialog.studentItems.add(it.name.toDash())
+            }
         }
     }
 
@@ -110,9 +122,8 @@ class FormFragment : Fragment(), DialogListener, StudentNotPresentAdapterListene
             totalStudentPresent = totalStudentPresent
         )
         // TODO Create Document In Form Collection
-        val documentPath = "${getTrimSubject()}-${getTrimGrade()}-${getTrimDate()}"
+        viewModel.formDocumentPath = "${getSubject()}-${getGrade()}-${getDate()}"
         viewModel.createFormDocument(
-            documentPath,
             formData,
             ::onSuccessCreateForm,
             ::onFailedCreateForm
@@ -121,9 +132,8 @@ class FormFragment : Fragment(), DialogListener, StudentNotPresentAdapterListene
 
     private fun onSuccessCreateForm() {
         // TODO Update Collection Class
-        viewModel.updateClass(getTrimGrade(), ::onSuccessUpdateClass, ::onFailedUpdateClass)
-        // TODO Update Collection Per User
-        // TODO Update Schedule Last Updated
+        viewModel.notPresentStudent.addAll(studentNotPresentAdapter.getData())
+        viewModel.updateClass(getGrade(), ::onSuccessUpdateClass, ::onFailedUpdateClass)
     }
 
     private fun onFailedCreateForm() {
@@ -132,30 +142,73 @@ class FormFragment : Fragment(), DialogListener, StudentNotPresentAdapterListene
     }
 
     private fun onSuccessUpdateClass() {
-        // TODO HANDLE
+        val collectionPath = viewModel.sharedPreferences.getUserName().toCollectionOrDocumentPath()
+        val documentPath = "${getDay()}-${getSubject()}-${getGrade()}"
+        scheduleModel.updatedAt = StringHelper.getCurrentDate()
+        viewModel.updateScheduleLastUpdated(
+            collectionPath,
+            documentPath,
+            scheduleModel,
+            ::onSuccessUpdateSchedule,
+            ::onFailedUpdateSchedule
+        )
     }
 
     private fun onFailedUpdateClass() {
-        // TODO HANDLE
+        viewModel.deleteFormDocument()
+        Toast.makeText(requireContext(), "Maaf data anda gagal tersimpan", Toast.LENGTH_SHORT)
+            .show()
     }
 
-    private fun onSuccess() {
-        Toast.makeText(requireContext(), "DATA INSERTED", Toast.LENGTH_SHORT).show()
+    private fun onSuccessUpdateSchedule() {
+        viewModel.students.forEach { studentModel ->
+            val collectionPath = studentModel.name.toEmpty().toCollectionOrDocumentPath()
+            val documentPath =
+                "${scheduleModel.subject.toEmpty().toCollectionOrDocumentPath()}-${getDate()}"
+            val attendanceModel = StudentAttendanceModel(
+                subject = scheduleModel.subject,
+                startTime = scheduleModel.startTime,
+                endTime = scheduleModel.endTime,
+                date = StringHelper.getCurrentDate(),
+                status = getStatus(studentModel)
+            )
+            viewModel.addStudentAttendance(
+                collectionPath,
+                documentPath,
+                attendanceModel,
+                ::onSuccessAddStudentAttendance,
+                ::onFailedAddStudentAttendance
+            )
+        }
     }
 
-    private fun getTrimDate(): String {
-        return StringHelper.getCurrentDate().replace("\\s".toRegex(), "").toUpperCase(Locale.ROOT)
+    private fun onFailedUpdateSchedule() {
+        viewModel.deleteFormDocument()
+        Toast.makeText(requireContext(), "Maaf data anda gagal tersimpan", Toast.LENGTH_SHORT)
+            .show()
     }
 
-    private fun getTrimSubject(): String {
-        return scheduleModel.subject.toEmpty().replace("\\s".toRegex(), "").toUpperCase(
-            Locale.ROOT
-        )
+    private fun onSuccessAddStudentAttendance() {
+        Toast.makeText(requireContext(), "Data Telah Berhasil Disimpan", Toast.LENGTH_LONG).show()
+        requireActivity().finish()
     }
 
-    private fun getTrimGrade(): String {
-        return scheduleModel.grade.toEmpty().replace("\\s".toRegex(), "").toUpperCase(
-            Locale.ROOT
-        )
+    private fun onFailedAddStudentAttendance() {
+        viewModel.deleteFormDocument()
+        Toast.makeText(requireContext(), "Maaf data anda gagal tersimpan", Toast.LENGTH_SHORT)
+            .show()
+    }
+
+    private fun getDate(): String = StringHelper.getCurrentDate().toCollectionOrDocumentPath()
+    private fun getDay(): String = scheduleModel.day.toEmpty().toCollectionOrDocumentPath()
+    private fun getSubject(): String = scheduleModel.subject.toEmpty().toCollectionOrDocumentPath()
+    private fun getGrade(): String = scheduleModel.grade.toEmpty().toCollectionOrDocumentPath()
+    private fun getStatus(studentModel: StudentModel): String {
+        studentNotPresentAdapter.getData().forEach {
+            if (it.student == studentModel.name) {
+                return it.status.value
+            }
+        }
+        return StudentAttendanceModel.Status.PRESENT.value
     }
 }

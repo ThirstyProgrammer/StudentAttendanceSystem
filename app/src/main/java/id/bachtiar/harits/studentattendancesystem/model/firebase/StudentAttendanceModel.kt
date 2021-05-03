@@ -1,6 +1,7 @@
 package id.bachtiar.harits.studentattendancesystem.model.firebase
 
 import id.bachtiar.harits.studentattendancesystem.R
+import id.bachtiar.harits.studentattendancesystem.util.toEmpty
 
 data class StudentAttendanceModel(
     val subject: String? = null,
@@ -12,7 +13,7 @@ data class StudentAttendanceModel(
 ) {
 
     fun getContainerColor(): Int {
-        return when (Status.getEnum(status ?: "")) {
+        return when (Status.getEnum(status.toEmpty())) {
             Status.PRESENT -> R.color.green_500
             Status.SICK -> R.color.blue_500
             Status.PERMIT -> R.color.yellow_500

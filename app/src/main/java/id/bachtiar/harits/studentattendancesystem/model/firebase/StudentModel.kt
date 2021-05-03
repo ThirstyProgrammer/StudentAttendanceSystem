@@ -7,8 +7,8 @@ import kotlinx.parcelize.Parcelize
 data class StudentModel(
     val name: String? = null,
     val gender: String? = null,
-    val present: Int? = 0,
-    val sick: Int? = 0,
-    val permit: Int? = 0,
-    val neglect: Int? = 0
+    var present: Int? = 0,
+    var sick: Int? = 0,
+    var permit: Int? = 0,
+    var neglect: Int? = 0
 ) : Parcelable

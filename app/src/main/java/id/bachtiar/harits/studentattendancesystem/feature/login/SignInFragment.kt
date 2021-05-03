@@ -34,15 +34,15 @@ class SignInFragment : Fragment(), ViewState.RetryRequest {
             this,
             ViewModelProvider.NewInstanceFactory()
         ).get(SignInViewModel::class.java)
+        viewModel.sharedPreferences = requireActivity().application.getSharedPreferences(
+            Constant.Config.APP_PREFERENCE,
+            MODE_PRIVATE
+        )
         return viewBinding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.sharedPreferences = requireActivity().application.getSharedPreferences(
-            Constant.Config.APP_PREFERENCE,
-            MODE_PRIVATE
-        )
         handlingViewState(viewBinding.containerMain, viewBinding.viewState, this)
 
         viewBinding.btnLogin.setOnClickListener {

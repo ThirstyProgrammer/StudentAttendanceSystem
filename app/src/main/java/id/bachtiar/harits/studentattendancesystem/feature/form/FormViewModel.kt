@@ -1,41 +1,32 @@
 package id.bachtiar.harits.studentattendancesystem.feature.form
 
+import android.content.SharedPreferences
 import android.util.Log
-import androidx.lifecycle.ViewModel
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
+import id.bachtiar.harits.studentattendancesystem.base.BaseViewModel
 import id.bachtiar.harits.studentattendancesystem.model.AttendanceForm
+import id.bachtiar.harits.studentattendancesystem.model.StudentDialog
+import id.bachtiar.harits.studentattendancesystem.model.firebase.ScheduleModel
+import id.bachtiar.harits.studentattendancesystem.model.firebase.StudentAttendanceModel
 import id.bachtiar.harits.studentattendancesystem.model.firebase.StudentModel
+import id.bachtiar.harits.studentattendancesystem.util.toCollectionOrDocumentPath
 import id.bachtiar.harits.studentattendancesystem.util.toEmpty
-import java.util.*
-import kotlin.collections.ArrayList
+import id.bachtiar.harits.studentattendancesystem.util.toZero
 
-class FormViewModel : ViewModel() {
+class FormViewModel : BaseViewModel() {
+
+    lateinit var sharedPreferences: SharedPreferences
 
     val TAG = "FORM_VIEW_MODEL"
     var students: List<StudentModel> = arrayListOf()
+    var updatedStudents: ArrayList<StudentModel> = arrayListOf()
+    var notPresentStudent: ArrayList<StudentDialog> = arrayListOf()
+    var formDocumentPath: String = ""
+    var completedStudentUpdate: Int = 0
     private var db = Firebase.firestore
     private var formCollection = db.collection("FORM")
-
-//    fun submitData(name: String, teacher: String, onSuccess: () -> Unit) {
-//        val data = hashMapOf(
-//            "name" to name,
-//            "homeroomTeacher" to teacher
-//        )
-//
-////        val list = arrayListOf<HashMap<String, Any>>()
-//
-//        db.collection("KELAS")
-//            .add(data)
-//            .addOnSuccessListener { documentReference ->
-//                onSuccess
-//                Log.d(TAG, "DocumentSnapshot added with ID: ${documentReference.id}")
-//            }
-//            .addOnFailureListener { e ->
-//                Log.w(TAG, "Error adding document", e)
-//            }
-//    }
 
     fun getStudentByClass(collectionPath: String, onSuccess: (data: List<StudentModel>) -> Unit) {
         db.collection(collectionPath).get()
@@ -54,27 +45,152 @@ class FormViewModel : ViewModel() {
     }
 
     fun createFormDocument(
-        documentPath: String,
         formData: AttendanceForm,
         onSuccess: () -> Unit,
         onFailed: () -> Unit
     ) {
-        formCollection.document(documentPath).set(formData)
+        handleFirebaseLoading()
+        formCollection.document(formDocumentPath).set(formData)
             .addOnSuccessListener {
                 onSuccess()
             }
             .addOnFailureListener { exception ->
                 onFailed()
                 Log.d(TAG, "Error getting documents: ", exception)
+                handleFirebaseComplete()
             }
     }
 
+    fun deleteFormDocument() {
+        formCollection.document(formDocumentPath).delete()
+    }
+
     fun updateClass(collectionPath: String, onSuccess: () -> Unit, onFailed: () -> Unit) {
-        students.forEach { studentModel ->
+        generateStudentData()
+        updatedStudents.forEach { studentModel ->
             val documentPath =
-                studentModel.name.toEmpty().replace("\\s".toRegex(), "").toUpperCase(Locale.ROOT)
-            // TODO Continue Update
-//            db.collection(collectionPath).document(documentPath).set()
+                studentModel.name.toEmpty().toCollectionOrDocumentPath()
+            db.collection(collectionPath).document(documentPath).set(studentModel)
+                .addOnSuccessListener {
+                    onSuccess()
+                }
+                .addOnFailureListener { exception ->
+                    onFailed()
+                    Log.d(TAG, "Error getting documents: ", exception)
+                    handleFirebaseComplete()
+                }
         }
     }
+
+    fun updateScheduleLastUpdated(
+        collectionPath: String,
+        documentPath: String,
+        scheduleModel: ScheduleModel,
+        onSuccess: () -> Unit,
+        onFailed: () -> Unit
+    ) {
+        db.collection(collectionPath).document(documentPath).set(scheduleModel)
+            .addOnSuccessListener { onSuccess() }
+            .addOnFailureListener { exception ->
+                onFailed()
+                Log.d(TAG, "Error Update Schedule: ", exception)
+                handleFirebaseComplete()
+            }
+    }
+
+    fun addStudentAttendance(
+        collectionPath: String,
+        documentPath: String,
+        attendanceModel: StudentAttendanceModel,
+        onSuccess: () -> Unit,
+        onFailed: () -> Unit
+    ) {
+        db.collection(collectionPath).document(documentPath).set(attendanceModel)
+            .addOnSuccessListener {
+                completedStudentUpdate += 1
+                if (completedStudentUpdate == students.size) {
+                    handleFirebaseComplete()
+                    onSuccess()
+                }
+            }
+            .addOnFailureListener { exception ->
+                onFailed()
+                Log.d(TAG, "Error Add Student Attendance: ", exception)
+                handleFirebaseComplete()
+            }
+    }
+
+    private fun generateStudentData() {
+        updatedStudents.clear()
+        students.forEach { studentModel ->
+            val (newStudentModel, isUpdated) = generateNewestStudentData(studentModel)
+            if (!isUpdated) newStudentModel.present = newStudentModel.present.toZero() + 1
+            updatedStudents.add(newStudentModel)
+        }
+    }
+
+    private fun generateNewestStudentData(studentModel: StudentModel): Pair<StudentModel, Boolean> {
+        notPresentStudent.forEach {
+            if (it.student == studentModel.name) {
+                when (it.status) {
+                    StudentAttendanceModel.Status.SICK -> {
+                        studentModel.sick = studentModel.sick.toZero() + 1
+                    }
+                    StudentAttendanceModel.Status.PERMIT -> {
+                        studentModel.permit = studentModel.permit.toZero() + 1
+                    }
+                    StudentAttendanceModel.Status.NEGLECT -> {
+                        studentModel.neglect = studentModel.neglect.toZero() + 1
+                    }
+                    else -> {
+                    }
+                }
+                notPresentStudent.remove(it)
+                return Pair(studentModel, true)
+            }
+        }
+        return Pair(studentModel, false)
+    }
+
+//    fun sourceInjectData(onSuccess: (data: List<ScheduleModel>) -> Unit) {
+//        db.collection("Paryono,S.SN").get()
+//            .addOnSuccessListener { result ->
+//                val data: ArrayList<ScheduleModel> = arrayListOf()
+//                result.forEach { document ->
+//                    val scheduleModel = document.toObject<ScheduleModel>()
+//                    data.add(scheduleModel)
+//                }
+//                onSuccess(data)
+//            }
+//            .addOnFailureListener { exception ->
+//                Log.d(TAG, "Error getting documents: ", exception)
+//            }
+//    }
+
+//    fun injectData() {
+
+//        // Rename Schedule Collection
+//        sourceInjectData {
+//            it.forEach {
+//                val day = it.day.toEmpty().replace("\\s".toRegex(), "").toUpperCase(Locale.ROOT)
+//                val grade = it.grade.toEmpty().replace("\\s".toRegex(), "").toUpperCase(Locale.ROOT)
+//                val subject =
+//                    it.subject.toEmpty().replace("\\s".toRegex(), "").toUpperCase(Locale.ROOT)
+//                val documentPath = "$day-$subject-$grade"
+//                db.collection("PARYONO,S.SN").document(documentPath).set(it)
+//            }
+//        }
+
+//        // Inject Student
+//        val data = DummyReport.getList()
+//        data.forEachIndexed { index, arrayOfStudentModels ->
+//            val collectionPath = "XIPS${index + 1}"
+//            arrayOfStudentModels.forEach {
+//                val documentPath =
+//                    it.name.toEmpty().replace("\\s".toRegex(), "").toUpperCase(Locale.ROOT)
+//                db.collection(collectionPath).document(documentPath).set(it)
+//            }
+//        }
+
+//    }
 }

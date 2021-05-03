@@ -2,6 +2,7 @@ package id.bachtiar.harits.studentattendancesystem.feature.home
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import id.bachtiar.harits.studentattendancesystem.databinding.ItemSchedulesBinding
 import id.bachtiar.harits.studentattendancesystem.model.firebase.ScheduleModel
@@ -47,6 +48,12 @@ class ScheduleAdapter : RecyclerView.Adapter<ScheduleAdapter.ScheduleViewHolder>
                 tvIntervalHour.text =
                     "${schedule.startTime} - ${schedule.endTime}"
                 tvDate.text = StringHelper.getCurrentDate()
+                containerMain.setBackgroundColor(
+                    ContextCompat.getColor(
+                        this.root.context,
+                        schedule.getContainerColor()
+                    )
+                )
             }
         }
     }
