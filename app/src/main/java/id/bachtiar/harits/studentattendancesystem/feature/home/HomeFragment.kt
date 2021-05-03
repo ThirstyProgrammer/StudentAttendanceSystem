@@ -5,21 +5,22 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import id.bachtiar.harits.studentattendancesystem.base.BaseFragment
 import id.bachtiar.harits.studentattendancesystem.databinding.FragmentHomeBinding
 import id.bachtiar.harits.studentattendancesystem.model.firebase.ScheduleModel
 import id.bachtiar.harits.studentattendancesystem.util.Constant
 import id.bachtiar.harits.studentattendancesystem.util.getUserName
 import id.bachtiar.harits.studentattendancesystem.util.toCollectionOrDocumentPath
+import id.bachtiar.harits.studentattendancesystem.widget.ViewState
 
-class HomeFragment : Fragment(), ScheduleAdapter.OnItemScheduleClickCallback {
+class HomeFragment : BaseFragment<HomeViewModel>(), ScheduleAdapter.OnItemScheduleClickCallback,
+    ViewState.RetryRequest {
 
     private lateinit var viewBinding: FragmentHomeBinding
-    private lateinit var viewModel: HomeViewModel
     private lateinit var scheduleAdapter: ScheduleAdapter
 
     override fun onCreateView(
@@ -40,6 +41,7 @@ class HomeFragment : Fragment(), ScheduleAdapter.OnItemScheduleClickCallback {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        handlingViewState(viewBinding.containerMain, viewBinding.viewState, this)
         scheduleAdapter = ScheduleAdapter()
         scheduleAdapter.setOnItemClickCallback(this)
         val linearLayoutManager = LinearLayoutManager(requireContext())
@@ -51,15 +53,26 @@ class HomeFragment : Fragment(), ScheduleAdapter.OnItemScheduleClickCallback {
             adapter = scheduleAdapter
             addItemDecoration(dividerItemDecoration)
         }
-        viewModel.getSchedule(
-            viewModel.sharedPreferences.getUserName().toCollectionOrDocumentPath()
-        ) { schedules ->
-            scheduleAdapter.setData(schedules)
-        }
+        getSchedule()
     }
 
     override fun onItemClicked(data: ScheduleModel) {
         val toFormActivity = HomeFragmentDirections.actionNavigationHomeToFormActivity(data)
         findNavController().navigate(toFormActivity)
+    }
+
+    override fun retry(response: ViewState.ResponseType) {
+        getSchedule()
+    }
+
+    override fun handleUnAuthorized() {}
+    override fun handleFailedRequest(message: String, respone: ViewState.ResponseType) {}
+
+    private fun getSchedule() {
+        viewModel.getSchedule(
+            viewModel.sharedPreferences.getUserName().toCollectionOrDocumentPath()
+        ) { schedules ->
+            scheduleAdapter.setData(schedules)
+        }
     }
 }

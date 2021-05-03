@@ -6,18 +6,25 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import id.bachtiar.harits.studentattendancesystem.base.BaseFragment
 import id.bachtiar.harits.studentattendancesystem.databinding.FragmentReportBinding
+import id.bachtiar.harits.studentattendancesystem.databinding.ViewStateBinding
 import id.bachtiar.harits.studentattendancesystem.model.firebase.GradeModel
 import id.bachtiar.harits.studentattendancesystem.util.Constant
+import id.bachtiar.harits.studentattendancesystem.widget.ViewState
+import id.bachtiar.harits.studentattendancesystem.widget.setErrorLayoutEnable
+import id.bachtiar.harits.studentattendancesystem.widget.setLoadingEnable
+import id.bachtiar.harits.studentattendancesystem.widget.setSuccessEnable
 
-class ReportFragment : Fragment(), GradeAdapter.OnItemGradeClickCallback {
+class ReportFragment : BaseFragment<ReportViewModel>(), GradeAdapter.OnItemGradeClickCallback,
+    ViewState.RetryRequest {
 
     private lateinit var viewBinding: FragmentReportBinding
-    private lateinit var viewModel: ReportViewModel
     private lateinit var gradeAdapter: GradeAdapter
 
     override fun onCreateView(
@@ -38,6 +45,7 @@ class ReportFragment : Fragment(), GradeAdapter.OnItemGradeClickCallback {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        handlingViewState(viewBinding.containerMain, viewBinding.viewState, this)
         gradeAdapter = GradeAdapter()
         gradeAdapter.setOnItemClickCallback(this)
         val linearLayoutManager = LinearLayoutManager(requireContext())
@@ -59,4 +67,13 @@ class ReportFragment : Fragment(), GradeAdapter.OnItemGradeClickCallback {
         val toGradeActivity = ReportFragmentDirections.actionNavigationReportToGradeActivity(data)
         findNavController().navigate(toGradeActivity)
     }
+
+    override fun retry(response: ViewState.ResponseType) {
+        viewModel.getData { data ->
+            gradeAdapter.setData(data)
+        }
+    }
+
+    override fun handleUnAuthorized() {}
+    override fun handleFailedRequest(message: String, respone: ViewState.ResponseType) {}
 }

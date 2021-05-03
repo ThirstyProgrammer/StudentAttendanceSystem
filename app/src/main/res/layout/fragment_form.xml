@@ -103,9 +103,10 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <ScrollView
+            android:id="@+id/container_main"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+            >
 
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="match_parent"

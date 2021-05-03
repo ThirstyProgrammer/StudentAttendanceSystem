@@ -29,6 +29,7 @@ class FormViewModel : BaseViewModel() {
     private var formCollection = db.collection("FORM")
 
     fun getStudentByClass(collectionPath: String, onSuccess: (data: List<StudentModel>) -> Unit) {
+        handleFirebaseLoading()
         db.collection(collectionPath).get()
             .addOnSuccessListener { result ->
                 val data: ArrayList<StudentModel> = arrayListOf()
@@ -38,8 +39,10 @@ class FormViewModel : BaseViewModel() {
                 }
                 students = data
                 onSuccess(data)
+                handleFirebaseComplete()
             }
             .addOnFailureListener { exception ->
+                handleFirebaseComplete()
                 Log.d(TAG, "Error getting documents: ", exception)
             }
     }

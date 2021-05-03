@@ -9,15 +9,18 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import id.bachtiar.harits.studentattendancesystem.base.BaseFragment
 import id.bachtiar.harits.studentattendancesystem.databinding.FragmentGradeBinding
 import id.bachtiar.harits.studentattendancesystem.model.firebase.GradeModel
 import id.bachtiar.harits.studentattendancesystem.model.firebase.StudentModel
+import id.bachtiar.harits.studentattendancesystem.util.toCollectionOrDocumentPath
+import id.bachtiar.harits.studentattendancesystem.widget.ViewState
 import java.util.*
 
-class GradeFragment : Fragment(), StudentReportAdapter.OnItemStudentReportClickCallback {
+class GradeFragment : BaseFragment<GradeViewModel>(),
+    StudentReportAdapter.OnItemStudentReportClickCallback, ViewState.RetryRequest {
 
     private lateinit var viewBinding: FragmentGradeBinding
-    private lateinit var viewModel: GradeViewModel
     private lateinit var studentReportAdapter: StudentReportAdapter
 
     override fun onCreateView(
@@ -35,20 +38,12 @@ class GradeFragment : Fragment(), StudentReportAdapter.OnItemStudentReportClickC
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        handlingViewState(viewBinding.containerMain, viewBinding.viewState, this)
 
         val grade: GradeModel = GradeFragmentArgs.fromBundle(arguments as Bundle).grade
         studentReportAdapter = StudentReportAdapter()
         studentReportAdapter.setOnItemClickCallback(this)
         viewBinding.apply {
-//            appBar.addOnOffsetChangedListener(object : AppBarStateChangeListener() {
-//                override fun onStateChanged(appBarLayout: AppBarLayout?, state: State) {
-//                    when (state) {
-//                        State.EXPANDED -> viewBinding.toolbar.visibility = View.INVISIBLE
-//                        State.COLLAPSED -> viewBinding.toolbar.visibility = View.VISIBLE
-//                        else -> viewBinding.toolbar.visibility = View.GONE
-//                    }
-//                }
-//            })
             tvName.text = grade.name
             tvHomeroomTeacher.text = grade.homeroomTeacher
             tvTotalStudent.text = grade.students.toString()
@@ -74,8 +69,12 @@ class GradeFragment : Fragment(), StudentReportAdapter.OnItemStudentReportClickC
         findNavController().navigate(toStudentFragment)
     }
 
+    override fun retry(response: ViewState.ResponseType) {}
+    override fun handleUnAuthorized() {}
+    override fun handleFailedRequest(message: String, respone: ViewState.ResponseType) {}
+
     private fun getData(gradeName: String) {
-        val collectionPath = gradeName.replace("\\s".toRegex(), "").toUpperCase(Locale.ROOT)
+        val collectionPath = gradeName.toCollectionOrDocumentPath()
         viewModel.getData(collectionPath) { data ->
             studentReportAdapter.setData(data)
         }

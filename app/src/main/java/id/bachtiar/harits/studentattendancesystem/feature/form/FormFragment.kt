@@ -7,25 +7,32 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import id.bachtiar.harits.studentattendancesystem.databinding.FragmentFormBinding
+import id.bachtiar.harits.studentattendancesystem.databinding.ViewStateBinding
 import id.bachtiar.harits.studentattendancesystem.model.AttendanceForm
 import id.bachtiar.harits.studentattendancesystem.model.StudentDialog
 import id.bachtiar.harits.studentattendancesystem.model.firebase.ScheduleModel
 import id.bachtiar.harits.studentattendancesystem.model.firebase.StudentAttendanceModel
 import id.bachtiar.harits.studentattendancesystem.model.firebase.StudentModel
 import id.bachtiar.harits.studentattendancesystem.util.*
-import java.util.*
+import id.bachtiar.harits.studentattendancesystem.widget.ViewState
+import id.bachtiar.harits.studentattendancesystem.widget.setErrorLayoutEnable
+import id.bachtiar.harits.studentattendancesystem.widget.setLoadingEnable
+import id.bachtiar.harits.studentattendancesystem.widget.setSuccessEnable
 
-class FormFragment : Fragment(), DialogListener, StudentNotPresentAdapterListener {
+class FormFragment : Fragment(), DialogListener, StudentNotPresentAdapterListener,
+    ViewState.RetryRequest {
 
     private lateinit var viewBinding: FragmentFormBinding
     private lateinit var viewModel: FormViewModel
     private lateinit var dialog: DialogStudentNotPresent
     private lateinit var studentNotPresentAdapter: StudentNotPresentAdapter
     private lateinit var scheduleModel: ScheduleModel
+    var mViewStateType = ViewState.ViewStateType.DEFAULT
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -42,6 +49,8 @@ class FormFragment : Fragment(), DialogListener, StudentNotPresentAdapterListene
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        handlingViewState(viewBinding.containerMain, viewBinding.viewState, this)
+
         viewModel.sharedPreferences = requireActivity().application.getSharedPreferences(
             Constant.Config.APP_PREFERENCE,
             Context.MODE_PRIVATE
@@ -101,6 +110,14 @@ class FormFragment : Fragment(), DialogListener, StudentNotPresentAdapterListene
         dialog.studentItems.add(studentNotPresent.student)
     }
 
+    override fun retry(response: ViewState.ResponseType) {
+        getStudents(scheduleModel.grade.toEmpty())
+    }
+
+    override fun handleUnAuthorized() {}
+
+    override fun handleFailedRequest(message: String, respone: ViewState.ResponseType) {}
+
     private fun getStudents(grade: String) {
         val collectionPath = grade.toCollectionOrDocumentPath()
         viewModel.getStudentByClass(collectionPath) { data ->
@@ -113,9 +130,9 @@ class FormFragment : Fragment(), DialogListener, StudentNotPresentAdapterListene
     private fun generateFormData() {
         val totalStudentPresent = viewModel.students.size - studentNotPresentAdapter.getData().size
         val formData = AttendanceForm(
-            teachingMedia = viewBinding.teachingMedia.toString(),
-            learningMaterials = viewBinding.learningMaterials.toString(),
-            obstaclesAndSolution = viewBinding.obstaclesAndSolution.toString(),
+            teachingMedia = viewBinding.teachingMedia.text.toString(),
+            learningMaterials = viewBinding.learningMaterials.text.toString(),
+            obstaclesAndSolution = viewBinding.obstaclesAndSolution.text.toString(),
             grade = scheduleModel.grade.toEmpty(),
             subject = scheduleModel.subject.toEmpty(),
             date = StringHelper.getCurrentDate(),
@@ -210,5 +227,45 @@ class FormFragment : Fragment(), DialogListener, StudentNotPresentAdapterListene
             }
         }
         return StudentAttendanceModel.Status.PRESENT.value
+    }
+
+    private fun handlingViewState(
+        mainContainer: View?,
+        viewStateBinding: ViewStateBinding?,
+        retryRequest: ViewState.RetryRequest?
+    ) {
+        viewModel.mutableViewState.observe(viewLifecycleOwner, Observer { viewState ->
+            when (viewState.stateStatus) {
+                ViewState.Status.PROGRESSING -> {
+                    viewStateBinding?.setLoadingEnable(mainContainer, mViewStateType)
+                }
+                ViewState.Status.ERROR -> {
+                    viewStateBinding?.setErrorLayoutEnable(
+                        mainContainer,
+                        viewState.isErrorBlocking,
+                        !viewState.isErrorUnknown,
+                        if (!viewState.stringMessage.isNullOrEmpty()) viewState.stringMessage else "Sepertinya terjadi kesalahan, silakan coba lagi."
+                    )
+                    if (viewState.isErrorBlocking) {
+                        viewStateBinding?.btnRetry?.setOnClickListener {
+                            retryRequest?.retry(viewState.response)
+                        }
+                    } else {
+                        retryRequest?.handleFailedRequest(
+                            viewState.stringMessage
+                                ?: "Sepertinya terjadi kesalahan, silakan coba lagi.",
+                            viewState.response
+                        )
+                    }
+                }
+                ViewState.Status.UNKNOWN -> {
+                }
+                ViewState.Status.UNAUTHORIZED -> {
+                }
+                ViewState.Status.GONE -> {
+                    viewStateBinding?.setSuccessEnable(mainContainer)
+                }
+            }
+        })
     }
 }

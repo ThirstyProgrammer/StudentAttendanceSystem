@@ -13,10 +13,10 @@ import androidx.navigation.fragment.findNavController
 import id.bachtiar.harits.studentattendancesystem.databinding.FragmentSigninBinding
 import id.bachtiar.harits.studentattendancesystem.databinding.ViewStateBinding
 import id.bachtiar.harits.studentattendancesystem.util.Constant
-import id.mufid.android.widget.ViewState
-import id.mufid.android.widget.setErrorLayoutEnable
-import id.mufid.android.widget.setLoadingEnable
-import id.mufid.android.widget.setSuccessEnable
+import id.bachtiar.harits.studentattendancesystem.widget.ViewState
+import id.bachtiar.harits.studentattendancesystem.widget.setErrorLayoutEnable
+import id.bachtiar.harits.studentattendancesystem.widget.setLoadingEnable
+import id.bachtiar.harits.studentattendancesystem.widget.setSuccessEnable
 
 class SignInFragment : Fragment(), ViewState.RetryRequest {
 

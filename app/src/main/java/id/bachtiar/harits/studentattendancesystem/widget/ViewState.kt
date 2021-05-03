@@ -1,4 +1,4 @@
-package id.mufid.android.widget
+package id.bachtiar.harits.studentattendancesystem.widget
 
 import android.view.View
 import id.bachtiar.harits.studentattendancesystem.R

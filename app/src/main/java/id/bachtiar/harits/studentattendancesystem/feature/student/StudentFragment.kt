@@ -8,15 +8,16 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import id.bachtiar.harits.studentattendancesystem.base.BaseFragment
 import id.bachtiar.harits.studentattendancesystem.databinding.FragmentStudentBinding
 import id.bachtiar.harits.studentattendancesystem.model.firebase.StudentModel
 import id.bachtiar.harits.studentattendancesystem.util.setViewVisibility
+import id.bachtiar.harits.studentattendancesystem.widget.ViewState
 import java.util.*
 
-class StudentFragment : Fragment() {
+class StudentFragment : BaseFragment<StudentViewModel>(), ViewState.RetryRequest {
 
     private lateinit var viewBinding: FragmentStudentBinding
-    private lateinit var viewModel: StudentViewModel
     private lateinit var studentAttendanceAdapter: StudentAttendanceAdapter
 
     override fun onCreateView(
@@ -34,7 +35,7 @@ class StudentFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        handlingViewState(viewBinding.containerMain, viewBinding.viewState, this)
         val student: StudentModel = StudentFragmentArgs.fromBundle(arguments as Bundle).student
         studentAttendanceAdapter = StudentAttendanceAdapter()
 
@@ -55,6 +56,10 @@ class StudentFragment : Fragment() {
             getData(student.name.toString())
         }
     }
+
+    override fun retry(response: ViewState.ResponseType) {}
+    override fun handleUnAuthorized() {}
+    override fun handleFailedRequest(message: String, respone: ViewState.ResponseType) {}
 
     private fun getData(studentName: String) {
         val collectionPath = studentName.replace("\\s".toRegex(), "").toUpperCase(Locale.ROOT)

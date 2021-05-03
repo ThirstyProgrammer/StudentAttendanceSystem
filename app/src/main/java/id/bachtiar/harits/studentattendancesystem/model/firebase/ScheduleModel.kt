@@ -18,4 +18,6 @@ data class ScheduleModel(
     fun getContainerColor(): Int {
         return if (updatedAt == StringHelper.getCurrentDate()) R.color.green_500_light else R.color.white
     }
+
+    fun isNotSubmitted(): Boolean = updatedAt != StringHelper.getCurrentDate()
 }

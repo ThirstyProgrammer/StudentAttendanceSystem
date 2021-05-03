@@ -2,14 +2,14 @@ package id.bachtiar.harits.studentattendancesystem.feature.report
 
 import android.content.SharedPreferences
 import android.util.Log
-import androidx.lifecycle.ViewModel
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
+import id.bachtiar.harits.studentattendancesystem.base.BaseViewModel
 import id.bachtiar.harits.studentattendancesystem.model.firebase.GradeModel
 import id.bachtiar.harits.studentattendancesystem.util.getUserProfile
 
-class ReportViewModel : ViewModel() {
+class ReportViewModel : BaseViewModel() {
 
     lateinit var sharedPreferences: SharedPreferences
 
@@ -18,6 +18,7 @@ class ReportViewModel : ViewModel() {
     private val gradeCollection = db.collection("KELAS")
 
     fun getData(onSuccess: (data: ArrayList<GradeModel>) -> Unit) {
+        handleFirebaseLoading()
         val listGrade = getListGrade()
         gradeCollection
             .whereIn("name", listGrade)
@@ -29,8 +30,10 @@ class ReportViewModel : ViewModel() {
                     data.add(grade)
                 }
                 onSuccess(data)
+                handleFirebaseComplete()
             }
             .addOnFailureListener { exception ->
+                handleFirebaseComplete()
                 Log.d(TAG, "Error getting documents: ", exception)
             }
     }

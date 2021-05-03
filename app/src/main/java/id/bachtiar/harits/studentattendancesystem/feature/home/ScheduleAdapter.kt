@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import id.bachtiar.harits.studentattendancesystem.databinding.ItemSchedulesBinding
 import id.bachtiar.harits.studentattendancesystem.model.firebase.ScheduleModel
 import id.bachtiar.harits.studentattendancesystem.util.StringHelper
+import id.bachtiar.harits.studentattendancesystem.util.toEmpty
 
 class ScheduleAdapter : RecyclerView.Adapter<ScheduleAdapter.ScheduleViewHolder>() {
 
@@ -22,7 +23,9 @@ class ScheduleAdapter : RecyclerView.Adapter<ScheduleAdapter.ScheduleViewHolder>
     override fun onBindViewHolder(holder: ScheduleViewHolder, position: Int) {
         holder.bind(schedules[position])
         holder.itemView.setOnClickListener {
-            listener.onItemClicked(schedules[position])
+            if (schedules[position].isNotSubmitted()) {
+                listener.onItemClicked(schedules[position])
+            }
         }
     }
 

@@ -8,7 +8,7 @@ import com.google.firebase.auth.FirebaseUser
 import id.bachtiar.harits.studentattendancesystem.model.Profile
 import id.bachtiar.harits.studentattendancesystem.model.firebase.UserModel
 import id.bachtiar.harits.studentattendancesystem.util.*
-import id.mufid.android.widget.ViewState
+import id.bachtiar.harits.studentattendancesystem.widget.ViewState
 
 abstract class BaseViewModel : ViewModel() {
 
