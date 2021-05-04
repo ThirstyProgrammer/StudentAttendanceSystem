@@ -19,9 +19,35 @@ class ReportViewModel : BaseViewModel() {
 
     fun getData(onSuccess: (data: ArrayList<GradeModel>) -> Unit) {
         handleFirebaseLoading()
+        if (sharedPreferences.getUserProfile().role == "kesiswaan") {
+            getDataForAdmin(onSuccess)
+        } else {
+            getDataForTeacher(onSuccess)
+        }
+    }
+
+    private fun getDataForTeacher(onSuccess: (data: ArrayList<GradeModel>) -> Unit) {
         val listGrade = getListGrade()
         gradeCollection
             .whereIn("name", listGrade)
+            .get()
+            .addOnSuccessListener { result ->
+                val data: ArrayList<GradeModel> = arrayListOf()
+                result.forEach { document ->
+                    val grade = document.toObject<GradeModel>()
+                    data.add(grade)
+                }
+                onSuccess(data)
+                handleFirebaseComplete()
+            }
+            .addOnFailureListener { exception ->
+                handleFirebaseComplete()
+                Log.d(TAG, "Error getting documents: ", exception)
+            }
+    }
+
+    private fun getDataForAdmin(onSuccess: (data: ArrayList<GradeModel>) -> Unit) {
+        gradeCollection
             .get()
             .addOnSuccessListener { result ->
                 val data: ArrayList<GradeModel> = arrayListOf()
