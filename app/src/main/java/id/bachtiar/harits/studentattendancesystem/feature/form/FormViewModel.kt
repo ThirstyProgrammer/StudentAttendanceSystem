@@ -154,46 +154,4 @@ class FormViewModel : BaseViewModel() {
         }
         return Pair(studentModel, false)
     }
-
-//    fun sourceInjectData(onSuccess: (data: List<ScheduleModel>) -> Unit) {
-//        db.collection("Paryono,S.SN").get()
-//            .addOnSuccessListener { result ->
-//                val data: ArrayList<ScheduleModel> = arrayListOf()
-//                result.forEach { document ->
-//                    val scheduleModel = document.toObject<ScheduleModel>()
-//                    data.add(scheduleModel)
-//                }
-//                onSuccess(data)
-//            }
-//            .addOnFailureListener { exception ->
-//                Log.d(TAG, "Error getting documents: ", exception)
-//            }
-//    }
-
-//    fun injectData() {
-
-//        // Rename Schedule Collection
-//        sourceInjectData {
-//            it.forEach {
-//                val day = it.day.toEmpty().replace("\\s".toRegex(), "").toUpperCase(Locale.ROOT)
-//                val grade = it.grade.toEmpty().replace("\\s".toRegex(), "").toUpperCase(Locale.ROOT)
-//                val subject =
-//                    it.subject.toEmpty().replace("\\s".toRegex(), "").toUpperCase(Locale.ROOT)
-//                val documentPath = "$day-$subject-$grade"
-//                db.collection("PARYONO,S.SN").document(documentPath).set(it)
-//            }
-//        }
-
-//        // Inject Student
-//        val data = DummyReport.getList()
-//        data.forEachIndexed { index, arrayOfStudentModels ->
-//            val collectionPath = "XIPS${index + 1}"
-//            arrayOfStudentModels.forEach {
-//                val documentPath =
-//                    it.name.toEmpty().replace("\\s".toRegex(), "").toUpperCase(Locale.ROOT)
-//                db.collection(collectionPath).document(documentPath).set(it)
-//            }
-//        }
-
-//    }
 }

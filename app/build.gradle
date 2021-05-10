@@ -21,8 +21,8 @@ android {
         applicationId "id.bachtiar.harits.studentattendancesystem"
         minSdkVersion 21
         targetSdkVersion 30
-        versionCode 1
-        versionName "1.0"
+        versionCode 2
+        versionName "1.1"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -77,9 +77,9 @@ android {
         applicationVariants.all { variant ->
             variant.outputs.each { output ->
                 if (buildType.name != "release") {
-                    output.outputFileName = "Sas-v${versionName}".replace(' ', "-") + ".apk"
+                    output.outputFileName = "Simon-v${versionName}".replace(' ', "-") + ".apk"
                 } else {
-                    output.outputFileName = "Sas-v${versionName}" + ".apk"
+                    output.outputFileName = "Simon-v${versionName}" + ".apk"
                 }
             }
         }
